@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scholarite - Espace Enseignant</title>
+    <link rel="stylesheet" href="teacherdashboard-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="glass-background"></div>
+
+    <header class="teacher-header">
+        <div class="profile-zone">
+            <div class="avatar-border">
+                <img src="https://via.placeholder.com/50" alt="M. Jean" id="teacher-avatar">
+            </div>
+            <div class="profile-info">
+                <span class="t-name">M. Jean DUPONT</span>
+                <span class="t-class">6e EP - Kinshasa</span>
+            </div>
+        </div>
+        <div class="school-logo-mini">SCHOLARITE</div>
+    </header>
+
+    <main id="app-content">
+        <section id="page-dashboard" class="page active">
+            <div class="top-row">
+                <div class="glass-card small date-card">
+                    <div class="pin"></div>
+                    <span id="current-date">-- / -- / ----</span>
+                </div>
+                <div class="glass-card small stats-card">
+                    <div class="pin"></div>
+                    <div id="gender-stats-loop" class="loop-box"></div>
+                </div>
+            </div>
+
+            <div class="middle-row">
+                <div class="glass-card full student-loop-card">
+                    <div class="pin"></div>
+                    <h3>Moyennes Générales (12 Élèves)</h3>
+                    <div class="loop-container" id="all-students-loop"></div>
+                </div>
+            </div>
+
+            <div class="bottom-row">
+                <div class="glass-card half">
+                    <div class="pin"></div>
+                    <h3>Top 5 (Haut)</h3>
+                    <div class="loop-container static" id="top-5-loop"></div>
+                </div>
+                <div class="glass-card half">
+                    <div class="pin"></div>
+                    <h3>Flop 5 (Bas)</h3>
+                    <div class="loop-container static" id="bottom-5-loop"></div>
+                </div>
+            </div>
+
+            <div class="glass-card full task-card">
+                <div class="pin"></div>
+                <h3>Checklist de l'Enseignant</h3>
+                <div class="loop-container" id="tasks-loop"></div>
+            </div>
+        </section>
+
+        <section id="page-saisie" class="page">
+            <div class="glass-card full">
+                <h3>Formulaire Intelligent</h3>
+                <div class="tag-selector">
+                    <label>Cours :</label>
+                    <select id="course-tag">
+                        <option>Français</option>
+                        <option>Mathématiques</option>
+                        <option>Éveil Scientifique</option>
+                    </select>
+                </div>
+                <div id="saisie-table-container"></div>
+                <button class="gold-btn">ENREGISTRER TOUT</button>
+            </div>
+        </section>
+        
+        <section id="page-appel" class="page">/* Structure Registre d'Appel */</section>
+        <section id="page-carnet" class="page">/* Structure Carnet de Cote */</section>
+        <section id="page-journal" class="page">/* Structure Journal de Classe */</section>
+    </main>
+
+    <nav class="bottom-nav">
+        <div class="nav-btn active" data-page="dashboard">
+            <i class="fas fa-th-large"></i><span>Dashboard</span>
+        </div>
+        <div class="nav-btn" data-page="saisie">
+            <i class="fas fa-pen-nib"></i><span>Saisie</span>
+        </div>
+        <div class="nav-btn" data-page="appel">
+            <i class="fas fa-clipboard-check"></i><span>Appel</span>
+        </div>
+        <div class="nav-btn" data-page="carnet">
+            <i class="fas fa-book-open"></i><span>Carnet</span>
+        </div>
+        <div class="nav-btn" data-page="journal">
+            <i class="fas fa-bullhorn"></i><span>Alerte</span>
+        </div>
+    </nav>
+
+    <script src="teacher-app.js"></script>
+</body>
+</html>
+
