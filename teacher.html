@@ -3,107 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Scholarite - Espace Enseignant</title>
+    <title>SCHOLARITE - Espace Enseignant</title>
+    <link rel="stylesheet" href="teacher-style.css">
     <link rel="stylesheet" href="teacherdashboard-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="glass-background"></div>
+    <div class="glass-bg"></div>
 
-    <header class="teacher-header">
-        <div class="profile-zone">
-            <div class="avatar-border">
-                <img src="https://via.placeholder.com/50" alt="M. Jean" id="teacher-avatar">
+    <div id="app-container">
+        <header class="teacher-header">
+            <div class="brand">SCHOLARITE</div>
+            <div class="teacher-profile">
+                <span id="teacher-name">M. Jean DUPONT - 6e EP</span>
+                <div class="profile-circle"></div>
             </div>
-            <div class="profile-info">
-                <span class="t-name">M. Jean DUPONT</span>
-                <span class="t-class">6e EP - Kinshasa</span>
-            </div>
-        </div>
-        <div class="school-logo-mini">SCHOLARITE</div>
-    </header>
+        </header>
 
-    <main id="app-content">
-        <section id="page-dashboard" class="page active">
-            <div class="top-row">
-                <div class="glass-card small date-card">
-                    <div class="pin"></div>
-                    <span id="current-date">-- / -- / ----</span>
+        <main id="main-view">
+            <section id="teacher-dashboard" class="page-view active">
+                <div class="card date-card">
+                    <h3 id="current-date">Dimanche, 26 Avril 2026</h3>
                 </div>
-                <div class="glass-card small stats-card">
-                    <div class="pin"></div>
-                    <div id="gender-stats-loop" class="loop-box"></div>
-                </div>
-            </div>
 
-            <div class="middle-row">
-                <div class="glass-card full student-loop-card">
-                    <div class="pin"></div>
-                    <h3>Moyennes Générales (12 Élèves)</h3>
-                    <div class="loop-container" id="all-students-loop"></div>
-                </div>
-            </div>
+                <div class="mobile-grid">
+                    <div class="glass-card md">
+                        <div class="pin"></div>
+                        <h3>Moyenne Élèves</h3>
+                        <div class="step-container">
+                            <div class="step-move" id="loop-avg"></div>
+                        </div>
+                    </div>
 
-            <div class="bottom-row">
-                <div class="glass-card half">
-                    <div class="pin"></div>
-                    <h3>Top 5 (Haut)</h3>
-                    <div class="loop-container static" id="top-5-loop"></div>
-                </div>
-                <div class="glass-card half">
-                    <div class="pin"></div>
-                    <h3>Flop 5 (Bas)</h3>
-                    <div class="loop-container static" id="bottom-5-loop"></div>
-                </div>
-            </div>
+                    <div class="glass-card sm">
+                        <div class="pin"></div>
+                        <h3>Signaux</h3>
+                        <div class="signal-list">
+                            <div class="sig-item"><i class="fas fa-check-circle txt-green"></i> Appel Fait</div>
+                            <div class="sig-item"><i class="fas fa-exclamation-triangle txt-yellow"></i> Journal incomplet</div>
+                        </div>
+                    </div>
 
-            <div class="glass-card full task-card">
-                <div class="pin"></div>
-                <h3>Checklist de l'Enseignant</h3>
-                <div class="loop-container" id="tasks-loop"></div>
-            </div>
-        </section>
+                    <div class="glass-card sm">
+                        <div class="pin"></div>
+                        <h3>Effectif F/G</h3>
+                        <div class="static-data">
+                            <p>Filles: <span class="txt-gold">14</span></p>
+                            <p>Garçons: <span class="txt-blue">16</span></p>
+                        </div>
+                    </div>
 
-        <section id="page-saisie" class="page">
-            <div class="glass-card full">
-                <h3>Formulaire Intelligent</h3>
-                <div class="tag-selector">
-                    <label>Cours :</label>
-                    <select id="course-tag">
-                        <option>Français</option>
-                        <option>Mathématiques</option>
-                        <option>Éveil Scientifique</option>
-                    </select>
+                    <div class="glass-card sm">
+                        <div class="pin"></div>
+                        <h3>Top 5 (Moyenne)</h3>
+                        <div class="step-container small">
+                            <div class="step-move" id="loop-top5"></div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card sm">
+                        <div class="pin"></div>
+                        <h3>Alerte : 5 Derniers</h3>
+                        <div class="step-container small">
+                            <div class="step-move" id="loop-bottom5"></div>
+                        </div>
+                    </div>
                 </div>
-                <div id="saisie-table-container"></div>
-                <button class="gold-btn">ENREGISTRER TOUT</button>
-            </div>
-        </section>
-        
-        <section id="page-appel" class="page">/* Structure Registre d'Appel */</section>
-        <section id="page-carnet" class="page">/* Structure Carnet de Cote */</section>
-        <section id="page-journal" class="page">/* Structure Journal de Classe */</section>
-    </main>
+            </section>
+        </main>
 
-    <nav class="bottom-nav">
-        <div class="nav-btn active" data-page="dashboard">
-            <i class="fas fa-th-large"></i><span>Dashboard</span>
-        </div>
-        <div class="nav-btn" data-page="saisie">
-            <i class="fas fa-pen-nib"></i><span>Saisie</span>
-        </div>
-        <div class="nav-btn" data-page="appel">
-            <i class="fas fa-clipboard-check"></i><span>Appel</span>
-        </div>
-        <div class="nav-btn" data-page="carnet">
-            <i class="fas fa-book-open"></i><span>Carnet</span>
-        </div>
-        <div class="nav-btn" data-page="journal">
-            <i class="fas fa-bullhorn"></i><span>Alerte</span>
-        </div>
-    </nav>
+        <nav class="bottom-nav">
+            <div class="nav-btn active" onclick="showPage('dashboard')">
+                <i class="fas fa-th-large"></i><span>Dashboard</span>
+            </div>
+            <div class="nav-btn" onclick="showPage('saisie')">
+                <i class="fas fa-edit"></i><span>Saisie</span>
+            </div>
+            <div class="nav-btn" onclick="showPage('appel')">
+                <i class="fas fa-user-check"></i><span>Appel</span>
+            </div>
+            <div class="nav-btn" onclick="showPage('carnet')">
+                <i class="fas fa-address-book"></i><span>Carnet</span>
+            </div>
+            <div class="nav-btn" onclick="showPage('journal')">
+                <i class="fas fa-book-open"></i><span>Journal</span>
+            </div>
+        </nav>
+    </div>
 
     <script src="teacher-app.js"></script>
 </body>
-</html>
-
+    </html>
+    
