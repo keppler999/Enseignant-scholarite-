@@ -1,6 +1,6 @@
 /**
  * SCHOLARITE - Brain Module (Enseignant)
- * Optimisé par Spiral Agence
+ * Version Corrigée pour Injection Dynamique
  */
 
 const eleves = [
@@ -18,7 +18,7 @@ const eleves = [
     {nom: "YENGO Raoul", sex: "M", moyenne: 41.0}
 ];
 
-// Variable pour stocker le HTML original du Dashboard
+// On stocke le contenu initial proprement
 let dashboardBackup = "";
 
 /**
@@ -26,31 +26,23 @@ let dashboardBackup = "";
  */
 function initDashboard() {
     const mainView = document.getElementById('main-view');
-    // On sauvegarde la structure du dashboard la première fois
-    if (!dashboardBackup) {
-        dashboardBackup = mainView.innerHTML;
-    }
-
     const scrollBox = document.getElementById('scroll-averages');
+    
     if(!scrollBox) return;
 
-    // Remplissage optimisé (un seul passage dans le DOM)
-    let averagesHtml = eleves.map(e => `
+    // Remplissage des moyennes
+    scrollBox.innerHTML = eleves.map(e => `
         <div class="list-item-black">
             <span>${e.nom}</span>
             <span class="${e.moyenne < 50 ? 'txt-red' : 'txt-green'}">${e.moyenne}%</span>
         </div>
     `).join('');
-    
-    scrollBox.innerHTML = averagesHtml;
 
-    // Calcul Top/Bottom 5
     const sorted = [...eleves].sort((a,b) => b.moyenne - a.moyenne);
     renderList('top-5', sorted.slice(0, 5), 'txt-green');
     renderList('bottom-5', sorted.slice(-5).reverse(), 'txt-red');
 }
 
-// Fonction utilitaire pour éviter la répétition de code
 function renderList(id, data, colorClass) {
     const container = document.getElementById(id);
     if(container) {
@@ -64,19 +56,22 @@ function renderList(id, data, colorClass) {
 }
 
 /**
- * 2. MOTEUR DE CHARGEMENT DYNAMIQUE
+ * 2. MOTEUR DE NAVIGATION
  */
 async function navigationRouter(target) {
     const mainView = document.getElementById('main-view');
 
-    // Cas particulier : Retour au Dashboard
+    // Sauvegarde du dashboard si ce n'est pas fait
+    if (!dashboardBackup) {
+        dashboardBackup = document.getElementById('view-dashboard').outerHTML;
+    }
+
     if (target === 'view-dashboard') {
         mainView.innerHTML = dashboardBackup;
         initDashboard();
         return;
     }
 
-    // Définition des fichiers selon la cible
     const routes = {
         'view-saisie': 'cote.html',
         'view-appel': 'appel.html',
@@ -89,58 +84,50 @@ async function navigationRouter(target) {
 
     try {
         const response = await fetch(fileName);
-        if (!response.ok) throw new Error(`Fichier ${fileName} introuvable`);
+        if (!response.ok) throw new Error("Fichier introuvable");
         const html = await response.text();
         
+        // On remplace le contenu de main-view
         mainView.innerHTML = html;
 
-        // Activation de la logique spécifique après injection
-        handlePageScripts(target);
+        // CRUCIAL : On attend un tout petit peu que le DOM soit prêt avant de lancer le script
+        setTimeout(() => {
+            handlePageScripts(target);
+        }, 50);
 
     } catch (error) {
-        mainView.innerHTML = `
-            <div class="glass-box" style="margin:20px; text-align:center;">
-                <i class="fas fa-exclamation-triangle txt-red"></i>
-                <p>Erreur de connexion au module : ${target}</p>
-                <small>${error.message}</small>
-            </div>`;
+        mainView.innerHTML = `<div class="glass-box" style="margin:20px;">Erreur : ${error.message}</div>`;
     }
 }
 
 /**
- * 3. GESTIONNAIRE DE SCRIPTS EXTERNES
+ * 3. GESTION DES SCRIPTS
  */
 function handlePageScripts(target) {
     if (target === 'view-saisie') {
-        // Si genererTableau existe déjà (script déjà chargé)
-        if (typeof genererTableau === "function") {
-            genererTableau(); 
-        } else {
-            const script = document.createElement('script');
-            script.src = 'cote-app.js';
-            document.body.appendChild(script);
-        }
+        // On force le re-chargement du script pour être sûr qu'il s'exécute sur le nouveau HTML
+        const oldScript = document.querySelector('script[src="cote-app.js"]');
+        if (oldScript) oldScript.remove();
+
+        const script = document.createElement('script');
+        script.src = 'cote-app.js';
+        document.body.appendChild(script);
     }
-    // Tu pourras ajouter ici d'autres scripts pour appel-app.js, etc.
 }
 
 /**
- * 4. ÉCOUTEURS D'ÉVÉNEMENTS
+ * 4. ÉCOUTEURS
  */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         if (this.classList.contains('active')) return;
-
-        // UI Update
         document.querySelector('.nav-btn.active').classList.remove('active');
         this.classList.add('active');
-
-        // Navigation
-        const target = this.getAttribute('data-target');
-        navigationRouter(target);
+        navigationRouter(this.getAttribute('data-target'));
     });
 });
 
-// Lancement au chargement de la fenêtre
-window.addEventListener('DOMContentLoaded', initDashboard);
-    
+window.addEventListener('DOMContentLoaded', () => {
+    initDashboard();
+});
+        
