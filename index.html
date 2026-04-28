@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCHOLARITE - Enseignant</title>
+    <title>SCHOLARITE - Interface Enseignant</title>
     <link rel="stylesheet" href="teacher-style.css">
+    <link rel="stylesheet" href="cote-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -13,7 +14,7 @@
     <header class="teacher-header">
         <div class="header-content">
             <div class="profile-mini">
-                <img src="https://via.placeholder.com/40" id="prof-img">
+                <img src="https://via.placeholder.com/40" id="prof-img" alt="Photo Prof">
                 <div>
                     <h4>M. Jean DUPONT</h4>
                     <small>6e EP - Kinshasa</small>
@@ -24,13 +25,15 @@
     </header>
 
     <main id="main-view" class="content-area">
+        
         <section id="view-dashboard" class="tab-content active">
-            <div class="date-card">26 Avril 2026</div>
+            <div class="date-card">28 Avril 2026</div>
             
             <div class="teacher-grid">
                 <div class="glass-box">
                     <h3><i class="fas fa-chart-line"></i> Moyennes Classe</h3>
-                    <div class="scroller" id="scroll-averages"></div>
+                    <div class="scroller" id="scroll-averages">
+                        </div>
                 </div>
 
                 <div class="glass-box sm">
@@ -61,21 +64,28 @@
             </div>
         </section>
 
-        <section id="view-saisie" class="tab-content"></section>
-        <section id="view-appel" class="tab-content"></section>
-        <section id="view-carnet" class="tab-content"></section>
-        <section id="view-journal" class="tab-content"></section>
+        <section id="dynamic-content" class="tab-content"></section>
+
     </main>
 
     <nav class="mobile-nav">
-        <div class="nav-btn active" data-target="view-dashboard"><i class="fas fa-th-large"></i><span>Dash</span></div>
-        <div class="nav-btn" data-target="view-saisie"><i class="fas fa-edit"></i><span>Saisie</span></div>
-        <div class="nav-btn" data-target="view-appel"><i class="fas fa-user-check"></i><span>Appel</span></div>
-        <div class="nav-btn" data-target="view-carnet"><i class="fas fa-address-book"></i><span>Carnet</span></div>
-        <div class="nav-btn" data-target="view-journal"><i class="fas fa-book-open"></i><span>Journal</span></div>
+        <div class="nav-btn active" data-target="view-dashboard">
+            <i class="fas fa-th-large"></i><span>Dash</span>
+        </div>
+        <div class="nav-btn" data-target="view-saisie">
+            <i class="fas fa-edit"></i><span>Cotes</span>
+        </div>
+        <div class="nav-btn" data-target="view-appel">
+            <i class="fas fa-user-check"></i><span>Appel</span>
+        </div>
+        <div class="nav-btn" data-target="view-carnet">
+            <i class="fas fa-address-book"></i><span>Carnet</span>
+        </div>
+        <div class="nav-btn" data-target="view-journal">
+            <i class="fas fa-book-open"></i><span>Journal</span>
+        </div>
     </nav>
 
     <script src="teacher-app.js"></script>
 </body>
 </html>
-
