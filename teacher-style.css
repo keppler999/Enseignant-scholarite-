@@ -1,6 +1,6 @@
 /**
  * SCHOLARITE - Signature Design by Spiral Agence
- * Fix : Header Alignment & Vertical Stack Logic
+ * Fix : Header Vertical Stack & Premium Option Elements
  */
 
 :root {
@@ -8,7 +8,7 @@
     --gold-glow: rgba(212, 175, 55, 0.4);
     --glass-premium: rgba(0, 0, 0, 0.5); 
     --row-black: rgba(0, 0, 0, 0.85);
-    --border-gold: rgba(212, 175, 55, 0.3);
+    --border-gold: rgba(212, 175, 55, 0.2);
     --border-white: rgba(255, 255, 255, 0.08);
     --blur-native: blur(25px);
 }
@@ -29,7 +29,7 @@ body {
 .teacher-header {
     position: sticky;
     top: 0;
-    height: 100px; /* Augmenté pour laisser respirer le titre + barres */
+    height: 100px;
     background: var(--glass-premium);
     backdrop-filter: var(--blur-native);
     -webkit-backdrop-filter: var(--blur-native);
@@ -47,25 +47,22 @@ body {
     padding: 0 20px;
 }
 
-/* --- BLOC DROITE : SCOLARITÉ + MENU --- */
 .header-right-block {
     display: flex;
-    flex-direction: column; /* Empilement vertical */
-    align-items: flex-end; /* Aligné à droite */
-    gap: 8px; /* Espace entre le texte et les barres */
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
 }
 
 .brand-small {
-    position: static; /* Annule le centrage absolu */
-    transform: none; /* Annule le centrage absolu */
-    left: auto; /* Annule le centrage absolu */
+    position: static;
+    transform: none;
     font-size: 0.75rem;
     font-weight: 900;
     letter-spacing: 3px; 
     color: var(--gold) !important;
     text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     text-transform: uppercase;
-    pointer-events: none;
 }
 
 /* --- AVATAR & PROFIL --- */
@@ -119,18 +116,19 @@ body {
 .bar-mid { width: 20px; }
 .bar-bottom { width: 28px; }
 
-/* --- SIDE DRAWER --- */
+/* --- SIDE DRAWER (L'ÉLÉGANCE RETROUVÉE) --- */
 .side-drawer {
     position: fixed;
     top: 0;
     right: -105%; 
-    width: 85%;
+    width: 82%;
     height: 100vh;
     z-index: 3000;
-    background: rgba(10, 10, 10, 0.95);
-    backdrop-filter: var(--blur-native);
-    border-left: 1.5px solid var(--border-gold);
-    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(5, 5, 5, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-left: 1px solid var(--border-gold);
+    transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     visibility: hidden;
 }
 
@@ -139,7 +137,42 @@ body {
     visibility: visible;
 }
 
-/* --- DASHBOARD & NAV (Inchangés pour stabilité) --- */
+.drawer-content {
+    padding: 50px 25px;
+    height: 100%;
+}
+
+.drawer-item {
+    background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2)) !important;
+    border: 1px solid var(--border-white) !important;
+    border-radius: 20px !important;
+    padding: 20px 22px !important;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: all 0.3s ease;
+}
+
+.drawer-item:active {
+    transform: scale(0.96);
+    background: rgba(212, 175, 55, 0.1) !important;
+    border-color: var(--gold) !important;
+}
+
+.drawer-item i {
+    font-size: 1.2rem;
+    filter: drop-shadow(0 0 8px var(--gold-glow));
+}
+
+.drawer-item span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.9);
+}
+
+/* --- DASHBOARD & NAV --- */
 .content-area { padding: 20px 20px 110px 20px; position: relative; z-index: 1; }
 .glass-box { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-white); border-radius: 24px; padding: 22px; margin-bottom: 20px; backdrop-filter: blur(12px); }
 .date-badge { background: var(--gold); color: #000; width: fit-content; padding: 6px 18px; border-radius: 25px; margin: 0 auto 25px auto; font-weight: 900; font-size: 0.65rem; }
@@ -150,7 +183,8 @@ body {
     bottom: 0;
     width: 100%;
     height: 85px;
-    background: rgba(0, 0, 0, 0.92);
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(15px);
     display: flex;
     justify-content: space-around;
     align-items: center;
