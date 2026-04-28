@@ -1,129 +1,139 @@
-/* SCHOLARITE - Correction Header & Profil
-   Design: Spiral Agence 
-*/
+/**
+ * SCHOLARITE - Signature Design by Spiral Agence
+ * Focus : Glassmorphism Profond & Bandes Noires Natives
+ */
 
 :root {
     --gold: #D4AF37;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --row-dark: rgba(0, 0, 0, 0.6); 
-    --border: rgba(255, 255, 255, 0.1);
-    --blur-native: blur(25px);
+    --glass-soft: rgba(255, 255, 255, 0.03);
+    --glass-deep: rgba(10, 10, 10, 0.75);
+    --row-black: rgba(0, 0, 0, 0.85); /* Noir pur semi-transparent pour les bandes */
+    --border-gold: rgba(212, 175, 55, 0.3);
+    --border-white: rgba(255, 255, 255, 0.08);
+    --blur-heavy: blur(40px); /* Effet verre poli premium */
 }
 
 body {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000') center/cover no-repeat fixed;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    color: #ffffff;
-    margin: 0; padding: 0;
-    height: 100vh; overflow: hidden;
-    -webkit-tap-highlight-color: transparent;
+    background: #000 url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000') center/cover no-repeat fixed;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #fff;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* --- HEADER FIX (Correction Profil & Titre) --- */
-
+/* --- HEADER NATIVE FEEL --- */
 .teacher-header {
-    padding: 12px 20px; /* Plus compact */
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: var(--blur-heavy);
+    -webkit-backdrop-filter: var(--blur-heavy);
+    border-bottom: 1px solid var(--border-white);
     z-index: 1000;
 }
 
 .profile-mini img {
-    width: 40px !important; /* Taille fixe pour éviter le bug massif */
-    height: 40px !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px; /* Carré arrondi style moderne iOS */
+    border: 1px solid var(--gold);
     object-fit: cover;
-    border: 1.5px solid var(--gold);
-    border-radius: 50%;
 }
 
 .brand-small {
-    font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 3px;
     color: var(--gold);
-    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
 }
 
-/* --- TIROIR LATÉRAL --- */
-
+/* --- MENU OPTIONS (LE VERRE POLI) --- */
 .side-drawer {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 75%;
+    width: 85%;
     height: 100%;
     z-index: 2000;
-    background: rgba(10, 10, 10, 0.85);
-    backdrop-filter: blur(35px);
-    -webkit-backdrop-filter: blur(35px);
-    border-left: 1px solid var(--border);
-    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--glass-deep);
+    backdrop-filter: var(--blur-heavy);
+    -webkit-backdrop-filter: var(--blur-heavy);
+    border-left: 1px solid var(--border-gold);
+    transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); /* Animation ultra-fluide */
 }
 
 .side-drawer.active {
     right: 0;
 }
 
-.drawer-content {
-    padding: 30px 20px;
-}
-
-/* --- STRUCTURE CONTENU --- */
-
-.content-area {
-    padding: 20px;
-    height: calc(100vh - 160px);
-    overflow-y: auto;
-}
-
-.teacher-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.glass-box {
-    background: var(--glass-bg);
-    backdrop-filter: var(--blur-native);
-    -webkit-backdrop-filter: var(--blur-native);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 18px;
-}
-
-.list-item-black {
-    background: var(--row-dark);
-    border-radius: 15px;
-    margin-bottom: 8px;
-    padding: 14px 18px;
+.drawer-header {
+    padding: 40px 25px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* --- NAVIGATION --- */
+/* --- LES BANDES NOIRES (Signature Spiral) --- */
+.list-item-black, .drawer-item {
+    background: var(--row-black) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-white) !important;
+    border-radius: 16px !important;
+    padding: 16px 20px !important;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.2s;
+}
 
+.drawer-item {
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.drawer-item:active {
+    background: var(--gold) !important;
+    color: #000;
+}
+
+/* --- NAVIGATION BASSE --- */
 .mobile-nav {
-    position: fixed; bottom: 0; width: 100%;
-    height: 75px;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(25px);
-    display: flex; justify-content: space-around; align-items: center;
-    border-top: 1px solid var(--border);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: var(--blur-heavy);
+    -webkit-backdrop-filter: var(--blur-heavy);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid var(--border-white);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
-.nav-btn i { font-size: 1.3rem; }
+.nav-btn {
+    opacity: 0.4;
+    transition: 0.3s;
+}
 
-/* --- ETATS & COULEURS --- */
+.nav-btn.active {
+    opacity: 1;
+    color: var(--gold);
+}
 
+/* --- UTILS --- */
 .txt-gold { color: var(--gold); }
-.txt-green { color: #32D74B; }
-.txt-red { color: #FF453A; }
-
-@keyframes pulse {
-    0% { opacity: 0.6; }
-    100% { opacity: 1; }
+.glass-box {
+    background: var(--glass-soft);
+    border: 1px solid var(--border-white);
+    border-radius: 30px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
 }
+
