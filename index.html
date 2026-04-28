@@ -7,7 +7,7 @@
     
     <link rel="stylesheet" href="teacher-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="glass-bg"></div>
@@ -15,71 +15,86 @@
     <div id="side-drawer" class="side-drawer">
         <div class="drawer-content">
             <div class="drawer-header">
-                <span class="txt-gold" style="font-weight: 800; letter-spacing: 1px;">OPTIONS</span>
-                <i class="fas fa-times" id="close-drawer" style="padding: 10px; opacity: 0.5;"></i>
+                <span class="txt-gold brand-small">OPTIONS</span>
+                <div id="close-drawer" class="close-icon-circle">
+                    <i class="fas fa-times"></i>
+                </div>
             </div>
             
             <div class="drawer-menu">
-                <div class="list-item-black drawer-item" data-target="view-profil">
-                    <i class="fas fa-user-circle txt-gold"></i> <span>Profil</span>
+                <div class="drawer-item" data-target="view-profil">
+                    <i class="fas fa-user-circle txt-gold"></i> 
+                    <span class="item-label">Profil</span>
                 </div>
-                <div class="list-item-black drawer-item" data-target="view-casier">
-                    <i class="fas fa-folder-open txt-gold"></i> <span>Casier Élève</span>
+                <div class="drawer-item" data-target="view-casier">
+                    <i class="fas fa-folder-open txt-gold"></i> 
+                    <span class="item-label">Casier Élève</span>
                 </div>
-                <div class="list-item-black drawer-item" data-target="view-liste">
-                    <i class="fas fa-clipboard-list txt-gold"></i> <span>Liste</span>
+                <div class="drawer-item" data-target="view-liste">
+                    <i class="fas fa-clipboard-list txt-gold"></i> 
+                    <span class="item-label">Liste</span>
                 </div>
-                <div class="list-item-black drawer-item" data-target="view-stats">
-                    <i class="fas fa-chart-line txt-gold"></i> <span>Statistiques</span>
+                <div class="drawer-item" data-target="view-stats">
+                    <i class="fas fa-chart-line txt-gold"></i> 
+                    <span class="item-label">Statistiques</span>
                 </div>
-                <div class="list-item-black drawer-item" data-target="view-settings">
-                    <i class="fas fa-cog txt-gold"></i> <span>Paramètres</span>
+                <div class="drawer-item" data-target="view-settings">
+                    <i class="fas fa-cog txt-gold"></i> 
+                    <span class="item-label">Paramètres</span>
                 </div>
-                <div class="list-item-black drawer-item" data-target="view-about">
-                    <i class="fas fa-info-circle txt-gold"></i> <span>À-propos</span>
+                <div class="drawer-item" data-target="view-about">
+                    <i class="fas fa-info-circle txt-gold"></i> 
+                    <span class="item-label">À-propos</span>
                 </div>
+            </div>
+            
+            <div class="drawer-footer">
+                <p>DESIGNED BY SPIRAL AGENCE</p>
+                <small>v2.1.0 • 2026</small>
             </div>
         </div>
     </div>
 
     <header class="teacher-header">
-        <div class="header-content" style="display: flex; justify-content: space-between; align-items: center;">
-            
-            <div class="profile-mini" style="display: flex; align-items: center; gap: 10px;">
+        <div class="header-content">
+            <div class="profile-mini">
                 <img src="https://i.pravatar.cc/150?u=prof" id="prof-img" alt="Photo Prof">
-                <div style="line-height: 1.2;">
-                    <h4 style="margin:0; font-size: 0.75rem; font-weight: 800;">M. Jean DUPONT</h4>
-                    <small style="opacity: 0.5; font-size: 0.6rem;">6<sup>e</sup> EP - Kinshasa</small>
+                <div class="profile-info">
+                    <h4>M. Jean DUPONT</h4>
+                    <small>6<sup>e</sup> EP - KINSHASA</small>
                 </div>
             </div>
 
-            <div class="brand-small" style="margin-left: auto; margin-right: 15px;">SCHOLARITE</div>
+            <div class="brand-small">SCHOLARITE</div>
             
-            <div id="menu-trigger" style="display: flex; flex-direction: column; gap: 4px; cursor: pointer;">
-                <div style="width: 20px; height: 2px; background: var(--gold); border-radius: 2px;"></div>
-                <div style="width: 12px; height: 2px; background: var(--gold); border-radius: 2px; align-self: flex-end;"></div>
+            <div id="menu-trigger" class="hamburger-menu">
+                <div class="bar-top"></div>
+                <div class="bar-bottom"></div>
             </div>
         </div>
     </header>
 
     <main id="main-view" class="content-area">
         <section id="view-dashboard" class="tab-content active">
-            <div class="date-card">28 Avril 2026</div>
+            <div class="date-card">28 AVRIL 2026</div>
+            
             <div class="teacher-grid">
                 <div class="glass-box">
                     <h3><i class="fas fa-archive"></i> RÉSUMÉ PRÉSENCES</h3>
                     <div class="list-item-black">
-                        <span>Présents</span>
-                        <span class="txt-green" style="font-weight: 800;">450</span>
+                        <span class="label">Présents</span>
+                        <span class="txt-green value">450</span>
                     </div>
                     <div class="list-item-black">
-                        <span>Absents</span>
-                        <span class="txt-red" style="font-weight: 800;">38</span>
+                        <span class="label">Absents</span>
+                        <span class="txt-red value">38</span>
                     </div>
                 </div>
+
                 <div class="glass-box">
                     <h3 class="txt-gold"><i class="fas fa-user-check"></i> POINTAGE RAPIDE</h3>
-                    <div id="top-5"></div>
+                    <div id="top-5">
+                        </div>
                 </div>
             </div>
         </section>
@@ -87,11 +102,21 @@
     </main>
 
     <nav class="mobile-nav">
-        <div class="nav-btn active" data-target="view-dashboard"><i class="fas fa-home"></i><span>Dash</span></div>
-        <div class="nav-btn" data-target="view-saisie"><i class="fas fa-list-ol"></i><span>Cotes</span></div>
-        <div class="nav-btn" data-target="view-appel"><i class="fas fa-check-square"></i><span>Appel</span></div>
-        <div class="nav-btn" data-target="view-carnet"><i class="fas fa-users"></i><span>Carnet</span></div>
-        <div class="nav-btn" data-target="view-journal"><i class="fas fa-book"></i><span>Journal</span></div>
+        <div class="nav-btn active" data-target="view-dashboard">
+            <i class="fas fa-home"></i><span>Dash</span>
+        </div>
+        <div class="nav-btn" data-target="view-saisie">
+            <i class="fas fa-list-ol"></i><span>Cotes</span>
+        </div>
+        <div class="nav-btn" data-target="view-appel">
+            <i class="fas fa-check-square"></i><span>Appel</span>
+        </div>
+        <div class="nav-btn" data-target="view-carnet">
+            <i class="fas fa-users"></i><span>Carnet</span>
+        </div>
+        <div class="nav-btn" data-target="view-journal">
+            <i class="fas fa-book"></i><span>Journal</span>
+        </div>
     </nav>
 
     <script src="teacher-app.js"></script>
