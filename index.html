@@ -12,89 +12,93 @@
 <body>
     <div class="glass-bg"></div>
 
+    <div id="side-drawer" class="side-drawer">
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <span class="txt-gold" style="font-weight: 800; letter-spacing: 1px;">OPTIONS</span>
+                <i class="fas fa-times" id="close-drawer" style="opacity: 0.5;"></i>
+            </div>
+            
+            <div class="drawer-menu">
+                <div class="list-item-black drawer-item" data-target="view-profil">
+                    <i class="fas fa-user-circle txt-gold"></i> <span>Profil</span>
+                </div>
+                <div class="list-item-black drawer-item" data-target="view-casier">
+                    <i class="fas fa-folder-open txt-gold"></i> <span>Casier Élève</span>
+                </div>
+                <div class="list-item-black drawer-item" data-target="view-liste">
+                    <i class="fas fa-clipboard-list txt-gold"></i> <span>Liste</span>
+                </div>
+                <div class="list-item-black drawer-item" data-target="view-stats">
+                    <i class="fas fa-chart-line txt-gold"></i> <span>Statistiques</span>
+                </div>
+                <div class="list-item-black drawer-item" data-target="view-settings">
+                    <i class="fas fa-cog txt-gold"></i> <span>Paramètres</span>
+                </div>
+                <div class="list-item-black drawer-item" data-target="view-about">
+                    <i class="fas fa-info-circle txt-gold"></i> <span>À-propos</span>
+                </div>
+            </div>
+            
+            <div style="position: absolute; bottom: 30px; left: 0; width: 100%; text-align: center; opacity: 0.2;">
+                <small style="font-size: 0.6rem;">SPIRAL AGENCE v2.0</small>
+            </div>
+        </div>
+    </div>
+
     <header class="teacher-header">
         <div class="header-content" style="display: flex; justify-content: space-between; align-items: center;">
             <div class="profile-mini" style="display: flex; align-items: center; gap: 12px;">
                 <img src="https://i.pravatar.cc/150?u=prof" id="prof-img" alt="Photo Prof">
                 <div>
-                    <h4 style="margin:0; font-size: 1rem;">M. Jean DUPONT</h4>
-                    <small style="opacity: 0.6;">6<sup>e</sup> EP - Kinshasa</small>
+                    <h4 style="margin:0; font-size: 0.8rem; letter-spacing: -0.3px;">M. Jean DUPONT</h4>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span style="width: 6px; height: 6px; background: #4ade80; border-radius: 50%;"></span>
+                        <small style="opacity: 0.6; font-size: 0.65rem;">6<sup>e</sup> EP - Kinshasa</small>
+                    </div>
                 </div>
             </div>
-            <div class="brand-small" style="color: var(--gold); font-weight: 800; letter-spacing: 2px;">SCHOLARITE</div>
+            
+            <div id="menu-trigger" style="display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 10px;">
+                <div style="width: 22px; height: 2px; background: var(--gold); border-radius: 2px;"></div>
+                <div style="width: 15px; height: 2px; background: var(--gold); border-radius: 2px; align-self: flex-end;"></div>
+            </div>
         </div>
     </header>
 
     <main id="main-view" class="content-area">
-        
         <section id="view-dashboard" class="tab-content active">
-            
             <div class="date-card">28 Avril 2026</div>
-            
             <div class="teacher-grid">
-                
                 <div class="glass-box">
-                    <h3><i class="fas fa-archive"></i> CASIER ÉLÈVE</h3>
+                    <h3><i class="fas fa-archive"></i> RÉSUMÉ PRÉSENCES</h3>
                     <div class="list-item-black">
-                        <span>Présents aujourd'hui</span>
-                        <span class="txt-green" style="font-size: 1.3rem;">450</span>
+                        <span>Présents</span>
+                        <span class="txt-green" style="font-size: 1.1rem; font-weight: 800;">450</span>
                     </div>
                     <div class="list-item-black">
-                        <span>Absents enregistrés</span>
-                        <span class="txt-red" style="font-size: 1.3rem;">38</span>
+                        <span>Absents</span>
+                        <span class="txt-red" style="font-size: 1.1rem; font-weight: 800;">38</span>
                     </div>
                 </div>
-
-                <div class="glass-box">
-                    <h3><i class="fas fa-graduation-cap"></i> ACADÉMIQUE</h3>
-                    <div class="list-item-black">
-                        <span>Moyenne de la classe</span>
-                        <span class="txt-gold" style="font-size: 1.3rem;">78%</span>
-                    </div>
-                </div>
-
-                <div class="glass-box">
-                    <h3><i class="fas fa-wallet"></i> FINANCES</h3>
-                    <div class="list-item-black">
-                        <span>Frais de scolarité payés</span>
-                        <span class="txt-green">97%</span>
-                    </div>
-                    <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: -5px; overflow: hidden;">
-                        <div style="width: 97%; height: 100%; background: var(--gold);"></div>
-                    </div>
-                </div>
-
                 <div class="glass-box">
                     <h3 class="txt-gold"><i class="fas fa-user-check"></i> POINTAGE RAPIDE</h3>
-                    <div id="top-5">
-                        </div>
+                    <div id="top-5"></div>
                 </div>
-
-            </div>
+                </div>
         </section>
-
         <section id="dynamic-content" class="tab-content"></section>
-
     </main>
 
     <nav class="mobile-nav">
-        <div class="nav-btn active" data-target="view-dashboard">
-            <i class="fas fa-home"></i><span>Dash</span>
-        </div>
-        <div class="nav-btn" data-target="view-saisie">
-            <i class="fas fa-list-ol"></i><span>Cotes</span>
-        </div>
-        <div class="nav-btn" data-target="view-appel">
-            <i class="fas fa-check-square"></i><span>Appel</span>
-        </div>
-        <div class="nav-btn" data-target="view-carnet">
-            <i class="fas fa-users"></i><span>Carnet</span>
-        </div>
-        <div class="nav-btn" data-target="view-journal">
-            <i class="fas fa-book"></i><span>Journal</span>
-        </div>
+        <div class="nav-btn active" data-target="view-dashboard"><i class="fas fa-home"></i><span>Dash</span></div>
+        <div class="nav-btn" data-target="view-saisie"><i class="fas fa-list-ol"></i><span>Cotes</span></div>
+        <div class="nav-btn" data-target="view-appel"><i class="fas fa-check-square"></i><span>Appel</span></div>
+        <div class="nav-btn" data-target="view-carnet"><i class="fas fa-users"></i><span>Carnet</span></div>
+        <div class="nav-btn" data-target="view-journal"><i class="fas fa-book"></i><span>Journal</span></div>
     </nav>
 
     <script src="teacher-app.js"></script>
 </body>
 </html>
+
