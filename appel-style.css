@@ -1,0 +1,58 @@
+.attendance-stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.stat-item span {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.stat-item label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.appel-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.6);
+    margin-bottom: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    border-left: 4px solid #555;
+    transition: 0.3s;
+}
+
+/* Styles pour les états */
+.appel-row.present { border-left-color: #2ecc71; background: rgba(46, 204, 113, 0.1); }
+.appel-row.absent { border-left-color: #e74c3c; background: rgba(231, 76, 60, 0.1); }
+
+.student-info h4 { margin: 0; font-size: 0.9rem; }
+.student-info small { color: var(--gold); font-size: 0.7rem; }
+
+.status-toggles {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-status {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-status.active-p { background: #2ecc71; border: none; box-shadow: 0 0 10px #2ecc71; }
+.btn-status.active-a { background: #e74c3c; border: none; box-shadow: 0 0 10px #e74c3c; }
