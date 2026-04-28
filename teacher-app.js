@@ -22,29 +22,30 @@ let dashboardBackup = "";
 
 /**
  * 1. INITIALISATION DU DASHBOARD
- * Rendu des "Bandes Noires" Signature
+ * Rendu des "Bandes Noires" Massives
  */
 function initDashboard() {
     const quickPointage = document.getElementById('top-5');
     if(!quickPointage) return;
 
     quickPointage.innerHTML = eleves.slice(0, 3).map(e => `
-        <div class="list-item-black" style="border-left: 2.5px solid var(--gold);">
+        <div class="list-item-black" style="border-left: 3px solid var(--gold); margin-bottom:12px;">
             <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px #4ade80;"></div>
-                <span class="label" style="font-size: 0.85rem; font-weight: 600;">${e.nom}</span>
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: #32D74B; box-shadow: 0 0 10px #32D74B;"></div>
+                <span style="font-size: 0.9rem; font-weight: 600; letter-spacing: 0.3px;">${e.nom}</span>
             </div>
-            <i class="fas fa-chevron-right" style="opacity: 0.2; font-size: 0.7rem;"></i>
+            <i class="fas fa-chevron-right txt-gold" style="opacity: 0.5; font-size: 0.8rem;"></i>
         </div>
     `).join('') + `
-        <div style="text-align: center; padding-top: 15px; opacity: 0.4;">
-            <small style="text-transform: uppercase; font-size: 0.5rem; letter-spacing: 2px;">Data Sync • Kinshasa Server</small>
+        <div style="text-align: center; padding-top: 15px; opacity: 0.3;">
+            <small style="text-transform: uppercase; font-size: 0.55rem; letter-spacing: 2.5px;">Spiral Engine • Sync Active</small>
         </div>
     `;
 }
 
 /**
  * 2. GESTION DU MENU LATÉRAL (Side Drawer)
+ * Blindage du Trigger (Deux barres)
  */
 function setupSideDrawer() {
     const trigger = document.getElementById('menu-trigger');
@@ -53,11 +54,12 @@ function setupSideDrawer() {
 
     if (!trigger || !drawer) return;
 
-    // Reset Event Listeners (Clone Technique)
-    const newTrigger = trigger.cloneNode(true);
-    trigger.parentNode.replaceChild(newTrigger, trigger);
+    // Suppression des anciens écouteurs pour éviter les bugs
+    trigger.replaceWith(trigger.cloneNode(true));
+    const activeTrigger = document.getElementById('menu-trigger');
 
-    newTrigger.addEventListener('click', () => {
+    activeTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
         drawer.classList.add('active');
     });
 
@@ -65,12 +67,12 @@ function setupSideDrawer() {
         closeBtn.onclick = () => drawer.classList.remove('active');
     }
 
-    // Fermeture auto sur sélection
+    // Gestion des options du menu
     document.querySelectorAll('.drawer-item').forEach(item => {
         item.onclick = function() {
             const target = this.getAttribute('data-target');
             drawer.classList.remove('active');
-            console.log("Spiral Engine : Target " + target);
+            console.log("Navigating to: " + target);
             // navigationRouter(target); 
         };
     });
@@ -83,7 +85,6 @@ async function navigationRouter(target) {
     const mainView = document.getElementById('main-view');
     const dashElement = document.getElementById('view-dashboard');
 
-    // Mise en cache du Dashboard original
     if (dashElement && !dashboardBackup) {
         dashboardBackup = dashElement.outerHTML;
     }
@@ -91,6 +92,7 @@ async function navigationRouter(target) {
     if (target === 'view-dashboard') {
         mainView.innerHTML = dashboardBackup;
         initDashboard();
+        setupSideDrawer(); // Relance le menu après retour au dash
         return;
     }
 
@@ -104,11 +106,10 @@ async function navigationRouter(target) {
     const fileName = routes[target];
     if (!fileName) return;
 
-    // Transition State (Spiral Agence Style)
     mainView.innerHTML = `
-        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:50vh; gap:15px;">
-            <div class="brand-small" style="animation: pulse 1.5s infinite;">SCHOLARITE</div>
-            <div style="width: 25px; height: 1.5px; background: var(--gold); border-radius: 10px;"></div>
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:60vh; gap:20px;">
+            <div class="txt-gold" style="font-weight:900; letter-spacing:5px; animation: pulse 1.5s infinite; font-size: 1rem;">SCHOLARITE</div>
+            <div style="width: 40px; height: 2px; background: var(--gold); border-radius: 10px;"></div>
         </div>`;
 
     try {
@@ -120,41 +121,21 @@ async function navigationRouter(target) {
 
         setTimeout(() => {
             handlePageScripts(target);
+            setupSideDrawer(); // Toujours garder le menu actif
         }, 150);
 
     } catch (error) {
         mainView.innerHTML = `
-            <div class="glass-box" style="margin:20px; text-align:center; border: 1px solid rgba(255, 69, 58, 0.15);">
-                <i class="fas fa-exclamation-triangle txt-red" style="font-size:1.5rem; margin-bottom:12px;"></i>
-                <h3 class="txt-red" style="font-size:0.75rem; letter-spacing:1px;">ERREUR DE CHARGEMENT</h3>
-                <p style="font-size:0.65rem; opacity:0.5;">Le module est introuvable ou hors ligne.</p>
+            <div class="glass-box" style="margin:20px; text-align:center; border: 1px solid var(--border-white);">
+                <i class="fas fa-wifi-slash txt-red" style="font-size:2rem; margin-bottom:15px;"></i>
+                <h3 class="txt-red" style="font-size:0.8rem; letter-spacing:1px;">MODULE INDISPONIBLE</h3>
+                <p style="font-size:0.7rem; opacity:0.5;">Vérifiez l'existence de <b>${fileName}</b>.</p>
             </div>`;
     }
 }
 
 /**
- * 4. GESTION DES SCRIPTS DYNAMIQUES
- */
-function handlePageScripts(target) {
-    const scriptMap = {
-        'view-saisie': 'notes-app.js',
-        'view-appel': 'appel-app.js',
-        'view-carnet': 'carnet-app.js',
-        'view-journal': 'journal-app.js'
-    };
-
-    const scriptFile = scriptMap[target];
-    if (!scriptFile) return;
-
-    document.querySelectorAll('.dynamic-script').forEach(s => s.remove());
-    const script = document.createElement('script');
-    script.src = `${scriptFile}?v=${new Date().getTime()}`;
-    script.className = 'dynamic-script';
-    document.body.appendChild(script);
-}
-
-/**
- * 5. EVENT BINDING & DOM READY
+ * 4. EVENT BINDING & BOOTSTRAP
  */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -170,3 +151,4 @@ window.addEventListener('DOMContentLoaded', () => {
     initDashboard();
     setupSideDrawer();
 });
+                   
