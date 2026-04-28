@@ -1,6 +1,6 @@
 /**
  * SCHOLARITE - Brain Module (Mobile Native Edition)
- * Logic : Navigation, Side Drawer & Data Rendering
+ * Logic : Navigation, Side Drawer & High-Speed Rendering
  */
 
 const eleves = [
@@ -21,31 +21,30 @@ const eleves = [
 let dashboardBackup = "";
 
 /**
- * 1. INITIALISATION DU DASHBOARD
- * Rendu des "Bandes Noires" Massives
+ * 1. RENDU DU DASHBOARD
  */
 function initDashboard() {
     const quickPointage = document.getElementById('top-5');
     if(!quickPointage) return;
 
     quickPointage.innerHTML = eleves.slice(0, 3).map(e => `
-        <div class="list-item-black" style="border-left: 3px solid var(--gold); margin-bottom:12px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 8px; height: 8px; border-radius: 50%; background: #32D74B; box-shadow: 0 0 10px #32D74B;"></div>
-                <span style="font-size: 0.9rem; font-weight: 600; letter-spacing: 0.3px;">${e.nom}</span>
+        <div class="list-item-black" style="border-left: 3.5px solid var(--gold);">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: #32D74B; box-shadow: 0 0 12px rgba(50, 215, 75, 0.6);"></div>
+                <span style="font-size: 0.95rem; font-weight: 600;">${e.nom}</span>
             </div>
-            <i class="fas fa-chevron-right txt-gold" style="opacity: 0.5; font-size: 0.8rem;"></i>
+            <i class="fas fa-chevron-right txt-gold" style="opacity: 0.4; font-size: 0.75rem;"></i>
         </div>
     `).join('') + `
-        <div style="text-align: center; padding-top: 15px; opacity: 0.3;">
-            <small style="text-transform: uppercase; font-size: 0.55rem; letter-spacing: 2.5px;">Spiral Engine • Sync Active</small>
+        <div style="text-align: center; padding-top: 15px; opacity: 0.2;">
+            <small style="text-transform: uppercase; font-size: 0.5rem; letter-spacing: 3px;">Spiral Engine 2.1 • Kinshasa</small>
         </div>
     `;
 }
 
 /**
- * 2. GESTION DU MENU LATÉRAL (Side Drawer)
- * Blindage du Trigger (Deux barres)
+ * 2. SYSTÈME DE TIROIR (SIDE DRAWER)
+ * Blindage contre le déploiement accidentel
  */
 function setupSideDrawer() {
     const trigger = document.getElementById('menu-trigger');
@@ -54,12 +53,12 @@ function setupSideDrawer() {
 
     if (!trigger || !drawer) return;
 
-    // Suppression des anciens écouteurs pour éviter les bugs
-    trigger.replaceWith(trigger.cloneNode(true));
-    const activeTrigger = document.getElementById('menu-trigger');
+    // Reset des écouteurs pour éviter les ouvertures multiples
+    const newTrigger = trigger.cloneNode(true);
+    trigger.parentNode.replaceChild(newTrigger, trigger);
 
-    activeTrigger.addEventListener('click', (e) => {
-        e.preventDefault();
+    newTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
         drawer.classList.add('active');
     });
 
@@ -67,32 +66,43 @@ function setupSideDrawer() {
         closeBtn.onclick = () => drawer.classList.remove('active');
     }
 
-    // Gestion des options du menu
+    // Fermeture si on clique en dehors du menu
+    document.addEventListener('click', (e) => {
+        if (drawer.classList.contains('active') && !drawer.contains(e.target) && e.target !== newTrigger) {
+            drawer.classList.remove('active');
+        }
+    });
+
+    // Navigation interne au menu
     document.querySelectorAll('.drawer-item').forEach(item => {
         item.onclick = function() {
             const target = this.getAttribute('data-target');
             drawer.classList.remove('active');
-            console.log("Navigating to: " + target);
-            // navigationRouter(target); 
+            // navigationRouter(target); // Activer pour les pages de profil/stats
         };
     });
 }
 
 /**
- * 3. MOTEUR DE NAVIGATION (ROUTER)
+ * 3. ROUTER DE NAVIGATION
  */
 async function navigationRouter(target) {
     const mainView = document.getElementById('main-view');
     const dashElement = document.getElementById('view-dashboard');
 
+    // Sauvegarde du Dash pour retour rapide
     if (dashElement && !dashboardBackup) {
         dashboardBackup = dashElement.outerHTML;
     }
 
+    // Fermeture forcée du tiroir lors d'une navigation
+    const drawer = document.getElementById('side-drawer');
+    if(drawer) drawer.classList.remove('active');
+
     if (target === 'view-dashboard') {
         mainView.innerHTML = dashboardBackup;
         initDashboard();
-        setupSideDrawer(); // Relance le menu après retour au dash
+        setupSideDrawer();
         return;
     }
 
@@ -106,10 +116,11 @@ async function navigationRouter(target) {
     const fileName = routes[target];
     if (!fileName) return;
 
+    // Transition State
     mainView.innerHTML = `
         <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:60vh; gap:20px;">
-            <div class="txt-gold" style="font-weight:900; letter-spacing:5px; animation: pulse 1.5s infinite; font-size: 1rem;">SCHOLARITE</div>
-            <div style="width: 40px; height: 2px; background: var(--gold); border-radius: 10px;"></div>
+            <div class="brand-small" style="animation: pulse 1s infinite;">SCHOLARITE</div>
+            <div style="width: 30px; height: 2px; background: var(--gold); border-radius: 5px;"></div>
         </div>`;
 
     try {
@@ -120,28 +131,27 @@ async function navigationRouter(target) {
         mainView.innerHTML = html;
 
         setTimeout(() => {
-            handlePageScripts(target);
-            setupSideDrawer(); // Toujours garder le menu actif
-        }, 150);
+            setupSideDrawer(); // Réactive le menu sur la nouvelle page
+            // handlePageScripts(target); // Activer si chaque page a son propre .js
+        }, 100);
 
     } catch (error) {
         mainView.innerHTML = `
-            <div class="glass-box" style="margin:20px; text-align:center; border: 1px solid var(--border-white);">
-                <i class="fas fa-wifi-slash txt-red" style="font-size:2rem; margin-bottom:15px;"></i>
-                <h3 class="txt-red" style="font-size:0.8rem; letter-spacing:1px;">MODULE INDISPONIBLE</h3>
-                <p style="font-size:0.7rem; opacity:0.5;">Vérifiez l'existence de <b>${fileName}</b>.</p>
+            <div class="glass-box" style="margin:20px; text-align:center; border: 1px solid rgba(255, 69, 58, 0.2);">
+                <i class="fas fa-wifi-slash txt-red" style="font-size:1.8rem; margin-bottom:15px;"></i>
+                <h3 class="txt-red" style="font-size:0.75rem;">CONNEXION MODULE ÉCHOUÉE</h3>
+                <p style="font-size:0.6rem; opacity:0.6;">Le fichier ${fileName} est introuvable.</p>
             </div>`;
     }
 }
 
 /**
- * 4. EVENT BINDING & BOOTSTRAP
+ * 4. BOOTSTRAP
  */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         if (this.classList.contains('active')) return;
-        const currentActive = document.querySelector('.nav-btn.active');
-        if(currentActive) currentActive.classList.remove('active');
+        document.querySelector('.nav-btn.active')?.classList.remove('active');
         this.classList.add('active');
         navigationRouter(this.getAttribute('data-target'));
     });
@@ -151,4 +161,3 @@ window.addEventListener('DOMContentLoaded', () => {
     initDashboard();
     setupSideDrawer();
 });
-                   
