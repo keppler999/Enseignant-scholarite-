@@ -1,6 +1,6 @@
 /**
  * SCHOLARITE - Brain Module (Mobile Native Edition)
- * Focus : Ergonomie tactile & Performance
+ * Mise à jour : Connexion au nouveau module "Notes"
  */
 
 const eleves = [
@@ -22,14 +22,12 @@ let dashboardBackup = "";
 
 /**
  * 1. INITIALISATION DU DASHBOARD
- * Affiche uniquement les informations essentielles pour un usage mobile rapide
  */
 function initDashboard() {
-    // On cible le conteneur de "Pointage Rapide" sur le Dashboard
     const quickPointage = document.getElementById('top-5');
     if(!quickPointage) return;
 
-    // On affiche les 3 premiers élèves pour un accès rapide (Gain de place)
+    // Affichage rapide sur le Dashboard (3 élèves)
     quickPointage.innerHTML = eleves.slice(0, 3).map(e => `
         <div class="list-item-black" style="border-left: 3px solid var(--gold);">
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -40,7 +38,7 @@ function initDashboard() {
         </div>
     `).join('') + `
         <div style="text-align: center; padding: 10px;">
-            <small style="color: var(--gold); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 1px;">Voir toute la liste dans l'onglet Appel</small>
+            <small style="color: var(--gold); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 1px;">Accès rapide - Module Notes actif</small>
         </div>
     `;
 }
@@ -51,10 +49,10 @@ function initDashboard() {
 async function navigationRouter(target) {
     const mainView = document.getElementById('main-view');
 
-    // Sauvegarde la structure initiale du dashboard si ce n'est pas fait
-    if (!dashboardBackup) {
-        const dashElement = document.getElementById('view-dashboard');
-        if(dashElement) dashboardBackup = dashElement.outerHTML;
+    // On sauvegarde le dashboard s'il est présent
+    const dashElement = document.getElementById('view-dashboard');
+    if (dashElement && !dashboardBackup) {
+        dashboardBackup = dashElement.outerHTML;
     }
 
     if (target === 'view-dashboard') {
@@ -63,8 +61,9 @@ async function navigationRouter(target) {
         return;
     }
 
+    // --- CORRECTION DES ROUTES ICI ---
     const routes = {
-        'view-saisie': 'cote.html',
+        'view-saisie': 'notes.html', // Nouveau nom
         'view-appel': 'appel.html',
         'view-carnet': 'carnet.html',
         'view-journal': 'journal.html'
@@ -73,43 +72,49 @@ async function navigationRouter(target) {
     const fileName = routes[target];
     if (!fileName) return;
 
-    // Feedback visuel de chargement
-    mainView.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:60vh;">
-                            <div class="txt-gold" style="animation: pulse 1s infinite;">Chargement...</div>
-                          </div>`;
+    mainView.innerHTML = `
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:50vh; gap:15px;">
+            <div class="txt-gold" style="font-weight:800; letter-spacing:2px; animation: pulse 1.5s infinite;">SPIRAL AGENCE</div>
+            <small style="opacity:0.5;">Chargement du module...</small>
+        </div>`;
 
     try {
         const response = await fetch(`${fileName}?v=${new Date().getTime()}`);
-        if (!response.ok) throw new Error("Fichier manquant");
+        if (!response.ok) throw new Error("Fichier non trouvé");
         
         const html = await response.text();
         mainView.innerHTML = html;
 
+        // On laisse un petit délai pour que le HTML soit rendu avant de charger le JS
         setTimeout(() => {
             handlePageScripts(target);
-        }, 50);
+        }, 100);
 
     } catch (error) {
         mainView.innerHTML = `
-            <div class="glass-box" style="margin:20px; text-align:center;">
-                <h3 class="txt-red">ERREUR</h3>
-                <p style="font-size:0.8rem;">Impossible de charger le module.</p>
+            <div class="glass-box" style="margin:20px; text-align:center; border: 1px solid rgba(251, 113, 133, 0.3);">
+                <i class="fas fa-exclamation-triangle txt-red" style="font-size:2rem; margin-bottom:15px;"></i>
+                <h3 class="txt-red">ERREUR DE CHARGEMENT</h3>
+                <p style="font-size:0.8rem; opacity:0.7;">Le fichier <b>${fileName}</b> est introuvable sur le serveur.</p>
+                <button onclick="location.reload()" style="margin-top:15px; padding:10px 20px; background:var(--gold); border:none; border-radius:10px; font-weight:800;">REESSAYER</button>
             </div>`;
     }
 }
 
 /**
- * 3. GESTION DES SCRIPTS
+ * 3. GESTION DES SCRIPTS DYNAMIQUES
  */
 function handlePageScripts(target) {
+    // --- CORRECTION DU SCRIPT MAP ICI ---
     const scriptMap = {
-        'view-saisie': 'cote-app.js',
+        'view-saisie': 'notes-app.js', // Nouveau nom
         'view-appel': 'appel-app.js'
     };
 
     const scriptFile = scriptMap[target];
     if (!scriptFile) return;
 
+    // Nettoyage des anciens scripts pour éviter les bugs
     document.querySelectorAll('.dynamic-script').forEach(s => s.remove());
 
     const script = document.createElement('script');
@@ -119,16 +124,21 @@ function handlePageScripts(target) {
 }
 
 /**
- * 4. EVENT LISTENERS
+ * 4. INITIALISATION
  */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         if (this.classList.contains('active')) return;
-        document.querySelector('.nav-btn.active').classList.remove('active');
+        
+        const activeBtn = document.querySelector('.nav-btn.active');
+        if(activeBtn) activeBtn.classList.remove('active');
+        
         this.classList.add('active');
         navigationRouter(this.getAttribute('data-target'));
     });
 });
 
-window.addEventListener('DOMContentLoaded', initDashboard);
-
+// Premier chargement
+window.addEventListener('DOMContentLoaded', () => {
+    initDashboard();
+});
