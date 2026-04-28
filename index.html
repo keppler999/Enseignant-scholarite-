@@ -10,12 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <div id="side-drawer" class="side-drawer">
         <div class="drawer-content">
             <div class="drawer-header">
                 <span class="brand-small">OPTIONS</span>
-                <div id="close-drawer" style="cursor:pointer; padding: 10px;">
-                    <i class="fas fa-times txt-gold" style="font-size: 1.2rem;"></i>
+                <div id="close-drawer" class="close-trigger">
+                    <i class="fas fa-times txt-gold"></i>
                 </div>
             </div>
             
@@ -39,16 +40,20 @@
                     <i class="fas fa-info-circle txt-gold"></i> <span>À-propos</span>
                 </div>
             </div>
+            
+            <div class="drawer-footer" style="text-align: center; margin-top: 30px; opacity: 0.3;">
+                <small style="letter-spacing: 2px;">SPIRAL AGENCE • 2026</small>
+            </div>
         </div>
     </div>
 
     <header class="teacher-header">
         <div class="header-content">
-            <div class="profile-mini" style="display: flex; align-items: center; gap: 12px;">
+            <div class="profile-mini">
                 <img src="https://i.pravatar.cc/150?u=prof" id="prof-img" alt="Photo Prof">
-                <div class="profile-info" style="line-height: 1.2;">
-                    <h4 style="margin:0; font-size: 0.75rem; font-weight: 800;">M. Jean DUPONT</h4>
-                    <small style="opacity: 0.5; font-size: 0.6rem; text-transform: uppercase;">6<sup>e</sup> EP - Kinshasa</small>
+                <div class="profile-info">
+                    <h4>M. Jean DUPONT</h4>
+                    <small>6<sup>e</sup> EP - KINSHASA</small>
                 </div>
             </div>
 
@@ -63,19 +68,17 @@
 
     <main id="main-view" class="content-area">
         <section id="view-dashboard" class="tab-content active">
-            <div class="date-card" style="background: var(--gold); color: #000; width: fit-content; padding: 5px 15px; border-radius: 20px; margin: 0 auto 25px auto; font-weight: 800; font-size: 0.7rem;">
-                28 AVRIL 2026
-            </div>
+            <div class="date-badge">28 AVRIL 2026</div>
             
             <div class="teacher-grid">
                 <div class="glass-box">
                     <h3><i class="fas fa-archive"></i> RÉSUMÉ PRÉSENCES</h3>
                     <div class="list-item-black">
-                        <span>Présents</span>
+                        <span class="label">Présents</span>
                         <span class="txt-green value">450</span>
                     </div>
                     <div class="list-item-black">
-                        <span>Absents</span>
+                        <span class="label">Absents</span>
                         <span class="txt-red value">38</span>
                     </div>
                 </div>
@@ -87,17 +90,28 @@
                 </div>
             </div>
         </section>
+        <section id="dynamic-content" class="tab-content"></section>
     </main>
 
     <nav class="mobile-nav">
-        <div class="nav-btn active" data-target="view-dashboard"><i class="fas fa-home"></i><span>Dash</span></div>
-        <div class="nav-btn" data-target="view-saisie"><i class="fas fa-list-ol"></i><span>Cotes</span></div>
-        <div class="nav-btn" data-target="view-appel"><i class="fas fa-check-square"></i><span>Appel</span></div>
-        <div class="nav-btn" data-target="view-carnet"><i class="fas fa-users"></i><span>Carnet</span></div>
-        <div class="nav-btn" data-target="view-journal"><i class="fas fa-book"></i><span>Journal</span></div>
+        <div class="nav-btn active" data-target="view-dashboard">
+            <i class="fas fa-home"></i><span>Dash</span>
+        </div>
+        <div class="nav-btn" data-target="view-saisie">
+            <i class="fas fa-list-ol"></i><span>Cotes</span>
+        </div>
+        <div class="nav-btn" data-target="view-appel">
+            <i class="fas fa-check-square"></i><span>Appel</span>
+        </div>
+        <div class="nav-btn" data-target="view-carnet">
+            <i class="fas fa-users"></i><span>Carnet</span>
+        </div>
+        <div class="nav-btn" data-target="view-journal">
+            <i class="fas fa-book"></i><span>Journal</span>
+        </div>
     </nav>
 
     <script src="teacher-app.js"></script>
 </body>
-</html>
-
+            </html>
+    
