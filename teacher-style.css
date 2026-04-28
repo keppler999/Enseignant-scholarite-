@@ -1,155 +1,98 @@
-/* SCHOLARITE - Design System (Spiral Agence)
-   Thème : Ultra-Glassmorphism
+/* SCHOLARITE - Ultra-Glass Dashboard v2 
+   Style: Dark Glass & Semi-Transparent Rows
 */
 
 :root {
     --gold: #D4AF37;
-    /* Verre blanc très léger pour laisser voir l'image derrière */
-    --glass: rgba(255, 255, 255, 0.08); 
-    /* Verre sombre mais transparent pour les éléments critiques */
-    --glass-heavy: rgba(0, 0, 0, 0.3); 
-    --border: rgba(255, 255, 255, 0.15);
-    --blur: blur(12px);
+    /* Verre fumé inspiré de ton image */
+    --glass-panel: rgba(255, 255, 255, 0.1);
+    /* Les fameuses bandes noires semi-transparentes */
+    --row-dark: rgba(0, 0, 0, 0.4);
+    --border: rgba(255, 255, 255, 0.1);
+    --blur-heavy: blur(20px);
 }
 
 body {
-    /* Image de classe floue en fond */
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+    /* Fond assombri pour faire ressortir le flou */
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
                 url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000') center/cover no-repeat fixed;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    color: #fff; 
-    margin: 0; 
-    padding: 0;
-    height: 100vh; 
-    overflow: hidden;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #f0f0f0; 
+    margin: 0; padding: 0;
+    height: 100vh; overflow: hidden;
 }
 
-/* On allège le calque global pour ne pas trop assombrir */
-.glass-bg {
-    position: fixed; top: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.1); 
-    backdrop-filter: blur(5px);
-    z-index: -1;
-}
-
-/* Header : Plus de transparence */
-.teacher-header {
-    position: relative; 
-    z-index: 10; 
-    padding: 15px;
-    background: var(--glass-heavy); 
-    backdrop-filter: var(--blur); /* Effet verre dépoli */
-    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-}
-
-.header-content { display: flex; justify-content: space-between; align-items: center; }
-.profile-mini { display: flex; align-items: center; gap: 10px; }
-.profile-mini img { 
-    width: 42px; height: 42px; 
-    border-radius: 50%; 
-    border: 2px solid var(--gold);
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-}
-.profile-mini h4 { margin: 0; font-size: 0.95rem; font-weight: 600; }
-.brand-small { 
-    color: var(--gold); 
-    font-weight: 800; 
-    letter-spacing: 3px; 
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
-}
-
-/* Grid & Box : L'effet "Floating Glass" */
-.teacher-grid {
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 15px; 
-    padding: 20px;
-    position: relative; 
-    z-index: 5;
-}
-
+/* Le conteneur principal type "Carte" de ton image */
 .glass-box {
-    background: var(--glass); 
+    background: var(--glass-panel);
+    backdrop-filter: var(--blur-heavy);
+    -webkit-backdrop-filter: var(--blur-heavy);
     border: 1px solid var(--border);
-    backdrop-filter: var(--blur); /* Applique le flou uniquement sous la boîte */
-    border-radius: 24px; 
-    padding: 15px; 
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 25px; /* Arrondis prononcés comme sur l'image */
+    padding: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    position: relative;
 }
 
-.glass-box h3 { 
-    font-size: 0.75rem; 
-    text-transform: uppercase; 
-    color: var(--gold); 
-    margin-bottom: 12px;
+/* L'élément clé : LA BANDE NOIRE (Row) */
+.list-item-black {
+    background: var(--row-dark);
+    backdrop-filter: blur(5px);
+    border-radius: 12px; /* Bandes légèrement arrondies */
+    margin-bottom: 6px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.03);
+    transition: transform 0.2s ease;
+}
+
+/* Titres de sections Gold comme sur l'image */
+.glass-box h3 {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
 }
 
-.date-card {
-    background: linear-gradient(45deg, #D4AF37, #F1D592);
-    color: #000; 
-    padding: 6px 18px;
-    border-radius: 12px; 
-    font-weight: 700; 
-    width: fit-content; 
-    margin: 15px auto;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+/* Petit point lumineux en haut à droite des cartes (vu sur ton image) */
+.glass-box::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold);
 }
 
-/* Liste des élèves sur le Dashboard */
-.list-item-black {
-    background: rgba(255, 255, 255, 0.05); /* Fond blanc très léger */
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 10px; 
-    border-radius: 12px;
-    margin-bottom: 8px; 
-    display: flex; 
-    justify-content: space-between; 
-    font-size: 0.85rem;
-    transition: 0.3s;
+/* Header & Nav restent cohérents */
+.teacher-header {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: var(--blur-heavy);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border);
 }
 
-/* Navigation Basse : Moderne & Translucide */
 .mobile-nav {
-    position: fixed; bottom: 0; width: 100%; height: 75px;
-    background: rgba(0, 0, 0, 0.4); 
-    backdrop-filter: blur(20px);
-    display: flex; 
-    justify-content: space-around; 
-    align-items: center;
-    border-top: 1px solid var(--border); 
-    z-index: 20;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(25px);
+    border-top: 1px solid var(--border);
+    height: 75px;
 }
 
-.nav-btn { 
-    color: rgba(255, 255, 255, 0.5); 
-    text-align: center; 
-    font-size: 0.65rem; 
-    cursor: pointer; 
-    transition: 0.3s;
-}
-.nav-btn i { font-size: 1.5rem; display: block; margin-bottom: 5px; }
-.nav-btn.active { 
-    color: var(--gold); 
-    transform: translateY(-5px); /* Petit saut pour le bouton actif */
-}
+/* Custom Scrollbar pour garder l'aspect clean */
+.scroller::-webkit-scrollbar { width: 0px; }
 
-/* Scrollers */
-.scroller { height: 140px; overflow-y: auto; scrollbar-width: none; }
-.scroller::-webkit-scrollbar { display: none; }
-
-/* Tabs */
-.tab-content { display: none; padding-bottom: 100px; overflow-y: auto; height: 100vh; }
-.tab-content.active { display: block; animation: fadeIn 0.5s ease; }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Couleurs */
-.txt-green { color: #2ecc71; text-shadow: 0 0 5px rgba(46, 204, 113, 0.3); }
-.txt-red { color: #e74c3c; text-shadow: 0 0 5px rgba(231, 76, 60, 0.3); }
-
+/* Status Labels */
+.txt-green { color: #4ade80; font-weight: 600; } /* Vert plus vif type Admin */
+.txt-red { color: #fb7185; font-weight: 600; }   /* Rouge pastel type Admin */
+   
