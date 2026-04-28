@@ -1,3 +1,8 @@
+/**
+ * SCHOLARITE - Brain Module (Enseignant)
+ * Optimisé par Spiral Agence
+ */
+
 const eleves = [
     {nom: "MALU Jean-Pierre", sex: "M", moyenne: 88.5},
     {nom: "YENGO Rebecca", sex: "F", moyenne: 92.1},
@@ -13,89 +18,129 @@ const eleves = [
     {nom: "YENGO Raoul", sex: "M", moyenne: 41.0}
 ];
 
-// 1. CHARGEMENT DU DASHBOARD (Initialisation)
-function loadDashboard() {
+// Variable pour stocker le HTML original du Dashboard
+let dashboardBackup = "";
+
+/**
+ * 1. INITIALISATION DU DASHBOARD
+ */
+function initDashboard() {
+    const mainView = document.getElementById('main-view');
+    // On sauvegarde la structure du dashboard la première fois
+    if (!dashboardBackup) {
+        dashboardBackup = mainView.innerHTML;
+    }
+
     const scrollBox = document.getElementById('scroll-averages');
-    if(!scrollBox) return; // Sécurité si on n'est pas sur le dash
+    if(!scrollBox) return;
 
-    scrollBox.innerHTML = ""; // On vide avant de remplir
-    eleves.forEach(e => {
-        scrollBox.innerHTML += `
-            <div class="list-item-black">
-                <span>${e.nom}</span>
-                <span class="${e.moyenne < 50 ? 'txt-red' : 'txt-green'}">${e.moyenne}%</span>
-            </div>
-        `;
-    });
+    // Remplissage optimisé (un seul passage dans le DOM)
+    let averagesHtml = eleves.map(e => `
+        <div class="list-item-black">
+            <span>${e.nom}</span>
+            <span class="${e.moyenne < 50 ? 'txt-red' : 'txt-green'}">${e.moyenne}%</span>
+        </div>
+    `).join('');
+    
+    scrollBox.innerHTML = averagesHtml;
 
+    // Calcul Top/Bottom 5
     const sorted = [...eleves].sort((a,b) => b.moyenne - a.moyenne);
-    const topBox = document.getElementById('top-5');
-    const bottomBox = document.getElementById('bottom-5');
-
-    topBox.innerHTML = ""; 
-    bottomBox.innerHTML = "";
-
-    sorted.slice(0, 5).forEach(e => {
-        topBox.innerHTML += `<div class="list-item-black"><span>${e.nom}</span> <span class="txt-green">${e.moyenne}%</span></div>`;
-    });
-
-    sorted.slice(-5).reverse().forEach(e => {
-        bottomBox.innerHTML += `<div class="list-item-black"><span>${e.nom}</span> <span class="txt-red">${e.moyenne}%</span></div>`;
-    });
+    renderList('top-5', sorted.slice(0, 5), 'txt-green');
+    renderList('bottom-5', sorted.slice(-5).reverse(), 'txt-red');
 }
 
-// 2. LE MOTEUR DE NAVIGATION (Chargement des fichiers externes)
-async function chargerPage(target, fileName) {
-    const mainView = document.getElementById('main-view');
-    
-    try {
-        const response = await fetch(fileName);
-        if (!response.ok) throw new Error("Fichier non trouvé");
-        const html = await response.text();
-        
-        // On injecte le contenu dans la zone d'affichage
-        mainView.innerHTML = html;
-
-        // LOGIQUE SPÉCIFIQUE SELON LA PAGE
-        if (target === 'view-saisie') {
-            // Si on charge la page cote, on active sa logique
-            if (typeof genererTableau === "function") {
-                genererTableau(); 
-            } else {
-                // Charge le script si pas encore présent
-                let script = document.createElement('script');
-                script.src = 'cote-app.js';
-                document.body.appendChild(script);
-            }
-        }
-    } catch (error) {
-        mainView.innerHTML = `<div class="glass-box">Erreur de chargement : ${error.message}</div>`;
+// Fonction utilitaire pour éviter la répétition de code
+function renderList(id, data, colorClass) {
+    const container = document.getElementById(id);
+    if(container) {
+        container.innerHTML = data.map(e => `
+            <div class="list-item-black">
+                <span>${e.nom}</span> 
+                <span class="${colorClass}">${e.moyenne}%</span>
+            </div>
+        `).join('');
     }
 }
 
-// 3. ÉCOUTEUR DE CLICS SUR LE MENU
+/**
+ * 2. MOTEUR DE CHARGEMENT DYNAMIQUE
+ */
+async function navigationRouter(target) {
+    const mainView = document.getElementById('main-view');
+
+    // Cas particulier : Retour au Dashboard
+    if (target === 'view-dashboard') {
+        mainView.innerHTML = dashboardBackup;
+        initDashboard();
+        return;
+    }
+
+    // Définition des fichiers selon la cible
+    const routes = {
+        'view-saisie': 'cote.html',
+        'view-appel': 'appel.html',
+        'view-carnet': 'carnet.html',
+        'view-journal': 'journal.html'
+    };
+
+    const fileName = routes[target];
+    if (!fileName) return;
+
+    try {
+        const response = await fetch(fileName);
+        if (!response.ok) throw new Error(`Fichier ${fileName} introuvable`);
+        const html = await response.text();
+        
+        mainView.innerHTML = html;
+
+        // Activation de la logique spécifique après injection
+        handlePageScripts(target);
+
+    } catch (error) {
+        mainView.innerHTML = `
+            <div class="glass-box" style="margin:20px; text-align:center;">
+                <i class="fas fa-exclamation-triangle txt-red"></i>
+                <p>Erreur de connexion au module : ${target}</p>
+                <small>${error.message}</small>
+            </div>`;
+    }
+}
+
+/**
+ * 3. GESTIONNAIRE DE SCRIPTS EXTERNES
+ */
+function handlePageScripts(target) {
+    if (target === 'view-saisie') {
+        // Si genererTableau existe déjà (script déjà chargé)
+        if (typeof genererTableau === "function") {
+            genererTableau(); 
+        } else {
+            const script = document.createElement('script');
+            script.src = 'cote-app.js';
+            document.body.appendChild(script);
+        }
+    }
+    // Tu pourras ajouter ici d'autres scripts pour appel-app.js, etc.
+}
+
+/**
+ * 4. ÉCOUTEURS D'ÉVÉNEMENTS
+ */
 document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Style visuel du menu
+    btn.addEventListener('click', function() {
+        if (this.classList.contains('active')) return;
+
+        // UI Update
         document.querySelector('.nav-btn.active').classList.remove('active');
-        btn.classList.add('active');
+        this.classList.add('active');
 
-        const target = btn.getAttribute('data-target');
-
-        // ROUTAGE DES PAGES
-        if (target === 'view-dashboard') {
-            // On peut soit recharger le contenu HTML du dash, soit rafraîchir
-            location.reload(); 
-        } 
-        else if (target === 'view-saisie') {
-            chargerPage('view-saisie', 'cote.html');
-        }
-        else if (target === 'view-carnet') {
-            chargerPage('view-carnet', 'carnet.html'); // Prépare déjà le futur fichier
-        }
+        // Navigation
+        const target = this.getAttribute('data-target');
+        navigationRouter(target);
     });
 });
 
-// Lancement au démarrage
-window.onload = loadDashboard;
-        
+// Lancement au chargement de la fenêtre
+window.addEventListener('DOMContentLoaded', initDashboard);
+    
