@@ -1,30 +1,43 @@
-<div class="page-container">
-    <div class="page-title">
-        <h2>REGISTRE D'APPEL</h2>
-        <small>6e EP | 28 Avril 2026</small>
+<div class="page-container glass-content">
+    
+    <div class="page-title" style="text-align: center; margin-bottom: 20px;">
+        <h2 style="color: var(--gold); letter-spacing: 1px; margin-bottom: 5px;">REGISTRE D'APPEL</h2>
+        <div class="date-card">28 Avril 2026</div>
+        <small style="opacity: 0.7; font-weight: 300;">Classe : 6<sup>e</sup> EP | Session Matin</small>
     </div>
 
-    <div class="glass-card attendance-stats">
-        <div class="stat-item">
-            <span id="total-present" class="txt-green">0</span>
-            <label>Présents</label>
+    <div class="glass-box attendance-stats" style="display: flex; justify-content: space-around; margin-bottom: 20px; padding: 20px;">
+        <div class="stat-item" style="text-align: center;">
+            <i class="fas fa-check-circle txt-green" style="font-size: 1.2rem; margin-bottom: 8px;"></i>
+            <span id="total-present" class="txt-green" style="display: block; font-size: 1.8rem; font-weight: 800;">0</span>
+            <label style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Présents</label>
         </div>
-        <div class="stat-item">
-            <span id="total-absent" class="txt-red">0</span>
-            <label>Absents</label>
+        
+        <div style="width: 1px; background: var(--border); height: 50px; align-self: center;"></div>
+
+        <div class="stat-item" style="text-align: center;">
+            <i class="fas fa-times-circle txt-red" style="font-size: 1.2rem; margin-bottom: 8px;"></i>
+            <span id="total-absent" class="txt-red" style="display: block; font-size: 1.8rem; font-weight: 800;">0</span>
+            <label style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Absents</label>
         </div>
     </div>
 
-    <div class="glass-card table-card">
-        <div class="table-header">
-            <i class="fas fa-user-check"></i>
-            <h3>Pointage Rapide</h3>
+    <div class="glass-box" style="padding: 0; overflow: hidden; border-radius: 28px;">
+        <div class="table-header" style="padding: 15px 20px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-users-viewfinder txt-gold"></i>
+                <h3 style="font-size: 0.9rem; margin: 0;">Pointage Rapide</h3>
+            </div>
+            <span style="font-size: 0.7rem; opacity: 0.6;" id="student-count">12 élèves</span>
         </div>
 
-        <div id="appel-list-container" class="students-scroll-list">
+        <div id="appel-list-container" class="scroller" style="height: 45vh; padding: 15px;">
             </div>
 
-        <button id="submit-appel-btn" class="glow-btn-gold">VALIDER LA PRÉSENCE</button>
+        <div style="padding: 15px; background: rgba(0,0,0,0.2);">
+            <button id="submit-appel-btn" class="date-card" style="width: 100%; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; margin: 0;">
+                <i class="fas fa-cloud-upload-alt"></i> Valider la présence
+            </button>
+        </div>
     </div>
 </div>
-
