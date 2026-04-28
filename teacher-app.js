@@ -1,6 +1,6 @@
 /**
  * SCHOLARITE - Brain Module (Mobile Native Edition)
- * Focus : Moteur de navigation, Menu Options & Side Drawer
+ * Version : Stabilisation Header & Side Drawer
  */
 
 const eleves = [
@@ -31,13 +31,13 @@ function initDashboard() {
         <div class="list-item-black" style="border-left: 3px solid var(--gold);">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 8px; height: 8px; border-radius: 50%; background: #4ade80;"></div>
-                <span>${e.nom}</span>
+                <span style="font-size: 0.8rem;">${e.nom}</span>
             </div>
             <i class="fas fa-chevron-right" style="opacity: 0.3; font-size: 0.7rem;"></i>
         </div>
     `).join('') + `
         <div style="text-align: center; padding: 10px;">
-            <small style="color: var(--gold); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 1px;">Écosystème Scholarite • Connecté</small>
+            <small style="color: var(--gold); text-transform: uppercase; font-size: 0.55rem; letter-spacing: 1px;">Écosystème Scholarite • Connecté</small>
         </div>
     `;
 }
@@ -51,28 +51,27 @@ function setupSideDrawer() {
     const closeBtn = document.getElementById('close-drawer');
 
     if (trigger && drawer) {
-        // Ouverture via les deux barres
-        trigger.addEventListener('click', () => {
+        // On clone pour éviter les doublons d'écouteurs d'événements
+        const newTrigger = trigger.cloneNode(true);
+        trigger.parentNode.replaceChild(newTrigger, trigger);
+
+        newTrigger.addEventListener('click', (e) => {
+            e.preventDefault();
             drawer.classList.add('active');
         });
 
-        // Fermeture via la croix
         if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                drawer.classList.remove('active');
-            });
+            closeBtn.onclick = () => drawer.classList.remove('active');
         }
 
-        // Fermeture automatique lors d'un clic sur une option
+        // Gestion des clics options
         document.querySelectorAll('.drawer-item').forEach(item => {
-            item.addEventListener('click', function() {
+            item.onclick = function() {
                 const target = this.getAttribute('data-target');
-                console.log("Navigation vers : " + target);
                 drawer.classList.remove('active');
-                
-                // Ici on pourra ajouter la navigation spécifique plus tard
-                // navigationRouter(target); 
-            });
+                console.log("Action demandée : " + target);
+                // navigationRouter(target); // À activer quand les fichiers seront prêts
+            };
         });
     }
 }
@@ -82,8 +81,8 @@ function setupSideDrawer() {
  */
 async function navigationRouter(target) {
     const mainView = document.getElementById('main-view');
-
     const dashElement = document.getElementById('view-dashboard');
+
     if (dashElement && !dashboardBackup) {
         dashboardBackup = dashElement.outerHTML;
     }
@@ -106,13 +105,13 @@ async function navigationRouter(target) {
 
     mainView.innerHTML = `
         <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:60vh; gap:20px;">
-            <div class="txt-gold" style="font-weight:900; letter-spacing:4px; animation: pulse 1.5s infinite;">SCHOLARITE</div>
-            <div style="width: 40px; height: 2px; background: var(--gold);"></div>
+            <div class="txt-gold" style="font-weight:900; letter-spacing:4px; animation: pulse 1.5s infinite; font-size: 0.8rem;">SCHOLARITE</div>
+            <div style="width: 30px; height: 1.5px; background: var(--gold);"></div>
         </div>`;
 
     try {
         const response = await fetch(`${fileName}?v=${new Date().getTime()}`);
-        if (!response.ok) throw new Error("Fichier absent");
+        if (!response.ok) throw new Error();
         
         const html = await response.text();
         mainView.innerHTML = html;
@@ -123,10 +122,10 @@ async function navigationRouter(target) {
 
     } catch (error) {
         mainView.innerHTML = `
-            <div class="glass-box" style="margin:20px; text-align:center;">
-                <i class="fas fa-wifi-slash txt-red" style="font-size:2rem; margin-bottom:15px;"></i>
-                <h3 class="txt-red">MODULE INDISPONIBLE</h3>
-                <p style="font-size:0.75rem; opacity:0.6;">Vérifiez <b>${fileName}</b>.</p>
+            <div class="glass-box" style="margin:20px; text-align:center; border: 1px solid rgba(255, 69, 58, 0.2);">
+                <i class="fas fa-wifi-slash txt-red" style="font-size:1.5rem; margin-bottom:10px;"></i>
+                <h3 class="txt-red" style="font-size:0.7rem;">MODULE INDISPONIBLE</h3>
+                <p style="font-size:0.65rem; opacity:0.6;">Le fichier <b>${fileName}</b> est manquant.</p>
             </div>`;
     }
 }
@@ -146,7 +145,6 @@ function handlePageScripts(target) {
     if (!scriptFile) return;
 
     document.querySelectorAll('.dynamic-script').forEach(s => s.remove());
-
     const script = document.createElement('script');
     script.src = `${scriptFile}?v=${new Date().getTime()}`;
     script.className = 'dynamic-script';
@@ -154,7 +152,7 @@ function handlePageScripts(target) {
 }
 
 /**
- * 5. INITIALISATION GÉNÉRALE
+ * 5. INITIALISATION
  */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -168,6 +166,5 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 
 window.addEventListener('DOMContentLoaded', () => {
     initDashboard();
-    setupSideDrawer(); // On active le menu latéral au chargement
+    setupSideDrawer();
 });
-
