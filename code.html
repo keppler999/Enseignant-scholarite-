@@ -1,54 +1,43 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="cote-style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <div class="page-container">
-        <div class="page-title">
-            <h2>PAGE 1 : SAISIE DES COTES</h2>
-            <small>(Intelligent Form)</small>
+<div class="page-container">
+    <div class="page-title">
+        <h2>PAGE 1 : SAISIE DES COTES</h2>
+        <small>(Intelligent Form - Module Enseignant)</small>
+    </div>
+
+    <div class="glass-card tag-selector">
+        <div class="input-group">
+            <label><i class="fas fa-filter txt-gold"></i> TAG DU COURS</label>
+            <select id="course-tag" class="cyber-select">
+                <option value="francais">Français</option>
+                <option value="maths">Mathématiques</option>
+                <option value="sciences">Éveil Scientifique</option>
+                <option value="civisme">Éducation Civile</option>
+            </select>
         </div>
-
-        <div class="glass-card tag-selector">
-            <div class="input-group">
-                <label><i class="fas fa-filter txt-gold"></i> TAG DU COURS</label>
-                <select id="course-tag" class="cyber-select">
-                    <option value="francais">Français</option>
-                    <option value="maths">Mathématiques</option>
-                    <option value="sciences">Éveil Scientifique</option>
-                    <option value="civisme">Éducation Civile</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label><i class="fas fa-calendar-alt txt-gold"></i> DATE</label>
-                <input type="text" id="current-date" class="cyber-input" readonly>
-            </div>
-        </div>
-
-        <div class="glass-card table-card">
-            <div class="pin"></div>
-            <div class="table-header">
-                <i class="fas fa-table"></i>
-                <h3>Tableau de Saisie (Période 1)</h3>
-            </div>
-            
-            <div class="column-labels">
-                <span>N°</span>
-                <span>NOM COMPLET</span>
-                <span>COTE (/20)</span>
-                <span>ACTIONS</span>
-            </div>
-
-            <div id="students-list-container" class="students-scroll-list">
-                </div>
-
-            <button id="save-all-btn" class="glow-btn-gold">ENREGISTRER TOUT</button>
+        <div class="input-group">
+            <label><i class="fas fa-calendar-alt txt-gold"></i> DATE</label>
+            <input type="text" id="current-date" class="cyber-input" value="28 Avril 2026" readonly>
         </div>
     </div>
-    <script src="cote-app.js"></script>
-</body>
-</html>
+
+    <div class="glass-card table-card">
+        <div class="pin"></div>
+        <div class="table-header">
+            <i class="fas fa-table"></i>
+            <h3>Tableau de Saisie (Période 1)</h3>
+        </div>
+        
+        <div class="column-labels">
+            <span>N°</span>
+            <span>NOM COMPLET</span>
+            <span>COTE (/20)</span>
+            <span>ACTIONS</span>
+        </div>
+
+        <div id="students-list-container" class="students-scroll-list"></div>
+
+        <button id="save-all-btn" class="glow-btn-gold">ENREGISTRER TOUT</button>
+    </div>
+</div>
+
+<script src="cote-app.js"></script>
