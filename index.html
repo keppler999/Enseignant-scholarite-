@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SCHOLARITE - Interface Enseignant</title>
+    <title>SCHOLARITE - Admin Dashboard</title>
     
     <link rel="stylesheet" href="teacher-style.css">
-    <link rel="stylesheet" href="cote-style.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="glass-bg"></div>
@@ -16,51 +15,64 @@
     <header class="teacher-header">
         <div class="header-content">
             <div class="profile-mini">
-                <img src="https://via.placeholder.com/40" id="prof-img" alt="Photo Prof">
+                <img src="https://i.pravatar.cc/150?u=prof" id="prof-img" alt="Photo Prof">
                 <div>
                     <h4>M. Jean DUPONT</h4>
-                    <small>6e EP - Kinshasa</small>
+                    <small>Administrateur / 6<sup>e</sup> EP</small>
                 </div>
             </div>
             <div class="brand-small">SCHOLARITE</div>
         </div>
     </header>
 
-    <main id="main-view" class="content-area">
+    <main id="main-view">
         
         <section id="view-dashboard" class="tab-content active">
+            <div style="padding: 15px 20px 0 20px;">
+                <div class="glass-box" style="height: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 20px; background: rgba(255,255,255,0.05);">
+                   <small style="color: var(--gold); font-size: 0.6rem; text-transform: uppercase;">Global Stats (Jours / %)</small>
+                   <div style="width: 100%; height: 50px; margin-top: 10px; background: url('https://i.imgur.com/8mXfS8v.png') center/contain no-repeat; opacity: 0.8;"></div>
+                </div>
+            </div>
+
             <div class="date-card">28 Avril 2026</div>
             
             <div class="teacher-grid">
                 <div class="glass-box">
-                    <h3><i class="fas fa-chart-line"></i> Moyennes Classe</h3>
-                    <div class="scroller" id="scroll-averages"></div>
-                </div>
-
-                <div class="glass-box sm">
-                    <h3><i class="fas fa-bell"></i> Statut Tâches</h3>
-                    <div id="task-status">
-                        <div class="status-item"><i class="fas fa-check-circle txt-green"></i> Appel fait</div>
-                        <div class="status-item"><i class="fas fa-times-circle txt-red"></i> Journal incomplet</div>
-                    </div>
-                </div>
-
-                <div class="glass-box sm">
-                    <h3><i class="fas fa-users"></i> Effectif</h3>
-                    <div class="sex-stats">
-                        <span><i class="fas fa-venus"></i> F: 12</span>
-                        <span><i class="fas fa-mars"></i> G: 18</span>
+                    <h3><i class="fas fa-archive"></i> CASIER ÉLÈVE</h3>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <div class="list-item-black" style="flex: 1; flex-direction: column; text-align: center;">
+                            <span class="txt-green" style="font-size: 1.2rem;">450</span>
+                            <small style="font-size: 0.5rem;">PRESENTS</small>
+                        </div>
+                        <div class="list-item-black" style="flex: 1; flex-direction: column; text-align: center;">
+                            <span class="txt-red" style="font-size: 1.2rem;">38</span>
+                            <small style="font-size: 0.5rem;">ABSENTS</small>
+                        </div>
                     </div>
                 </div>
 
                 <div class="glass-box">
-                    <h3 class="txt-gold">Top 5 Élèves</h3>
+                    <h3><i class="fas fa-graduation-cap"></i> NOTES CLASSE</h3>
+                    <div class="scroller" id="scroll-averages">
+                        </div>
+                </div>
+
+                <div class="glass-box">
+                    <h3 class="txt-gold"><i class="fas fa-trophy"></i> TOP 5 ÉLÈVES</h3>
                     <div id="top-5" class="list-mini"></div>
                 </div>
 
                 <div class="glass-box">
-                    <h3 class="txt-red">Derniers 5</h3>
-                    <div id="bottom-5" class="list-mini"></div>
+                    <h3><i class="fas fa-wallet"></i> FINANCES</h3>
+                    <div class="list-item-black">
+                        <span>Payé</span>
+                        <span class="txt-green">97%</span>
+                    </div>
+                    <div class="list-item-black">
+                        <span>Reste</span>
+                        <span class="txt-red">3%</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -90,3 +102,4 @@
     <script src="teacher-app.js"></script>
 </body>
 </html>
+
