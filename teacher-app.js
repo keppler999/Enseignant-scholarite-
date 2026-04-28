@@ -1,6 +1,6 @@
 /**
- * SCHOLARITE - Brain Module (Enseignant)
- * Optimisé pour GitHub Pages & Navigation Multi-Modules
+ * SCHOLARITE - Brain Module (Admin Edition)
+ * Optimisé pour le design "Bandes Noires" & Glassmorphism
  */
 
 const eleves = [
@@ -22,29 +22,39 @@ let dashboardBackup = "";
 
 /**
  * 1. INITIALISATION DU DASHBOARD
+ * Génère les bandes noires semi-transparentes
  */
 function initDashboard() {
     const scrollBox = document.getElementById('scroll-averages');
     if(!scrollBox) return;
 
+    // Remplissage avec le style "Admin Row"
     scrollBox.innerHTML = eleves.map(e => `
         <div class="list-item-black">
-            <span>${e.nom}</span>
-            <span class="${e.moyenne < 50 ? 'txt-red' : 'txt-green'}">${e.moyenne}%</span>
+            <span style="font-weight: 500;">${e.nom}</span>
+            <span class="${e.moyenne < 50 ? 'txt-red' : 'txt-gold'}" style="font-weight: 800;">
+                ${e.moyenne}%
+            </span>
         </div>
     `).join('');
 
     const sorted = [...eleves].sort((a,b) => b.moyenne - a.moyenne);
-    renderList('top-5', sorted.slice(0, 5), 'txt-green');
+    
+    // Top 5 avec badges Gold
+    renderList('top-5', sorted.slice(0, 5), 'txt-gold');
+    // Bottom 5 avec alertes Rouges
     renderList('bottom-5', sorted.slice(-5).reverse(), 'txt-red');
 }
 
 function renderList(id, data, colorClass) {
     const container = document.getElementById(id);
     if(container) {
-        container.innerHTML = data.map(e => `
+        container.innerHTML = data.map((e, index) => `
             <div class="list-item-black">
-                <span>${e.nom}</span> 
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <small style="opacity:0.4; font-size:0.6rem;">0${index+1}</small>
+                    <span>${e.nom}</span>
+                </div>
                 <span class="${colorClass}">${e.moyenne}%</span>
             </div>
         `).join('');
@@ -57,7 +67,6 @@ function renderList(id, data, colorClass) {
 async function navigationRouter(target) {
     const mainView = document.getElementById('main-view');
 
-    // Sauvegarde du dashboard au premier clic
     if (!dashboardBackup) {
         const dashElement = document.getElementById('view-dashboard');
         if(dashElement) dashboardBackup = dashElement.outerHTML;
@@ -80,33 +89,31 @@ async function navigationRouter(target) {
     if (!fileName) return;
 
     try {
-        // Ajout d'un cache-breaker pour GitHub Pages (?v=...)
+        // Cache-breaker pour forcer la mise à jour sur GitHub
         const response = await fetch(`${fileName}?v=${new Date().getTime()}`);
-        if (!response.ok) throw new Error(`Fichier ${fileName} non trouvé (Erreur ${response.status})`);
+        if (!response.ok) throw new Error(`Fichier ${fileName} introuvable`);
         
         const html = await response.text();
         mainView.innerHTML = html;
 
-        // On laisse le DOM respirer avant d'injecter la logique
         setTimeout(() => {
             handlePageScripts(target);
         }, 100);
 
     } catch (error) {
         mainView.innerHTML = `
-            <div class="glass-box" style="margin:20px; border: 1px solid rgba(255,0,0,0.3)">
-                <h3 class="txt-red"><i class="fas fa-exclamation-triangle"></i> Module Indisponible</h3>
-                <p>Le fichier <b>${fileName}</b> semble manquant ou mal nommé sur GitHub.</p>
-                <small>${error.message}</small>
+            <div class="glass-box" style="margin:20px; text-align:center;">
+                <i class="fas fa-plug txt-red" style="font-size:2rem; margin-bottom:10px;"></i>
+                <h3 class="txt-red">ERREUR DE CHARGEMENT</h3>
+                <p style="font-size:0.8rem;">Module <b>${fileName}</b> non détecté.</p>
             </div>`;
     }
 }
 
 /**
- * 3. GESTIONNAIRE DE SCRIPTS DYNAMIQUE
+ * 3. GESTION DES SCRIPTS DYNAMIQUES
  */
 function handlePageScripts(target) {
-    // Liste des scripts par module
     const scriptMap = {
         'view-saisie': 'cote-app.js',
         'view-appel': 'appel-app.js'
@@ -115,11 +122,8 @@ function handlePageScripts(target) {
     const scriptFile = scriptMap[target];
     if (!scriptFile) return;
 
-    // 1. On nettoie les anciens scripts injectés pour éviter les doublons
-    const dynamicScripts = document.querySelectorAll('.dynamic-script');
-    dynamicScripts.forEach(s => s.remove());
+    document.querySelectorAll('.dynamic-script').forEach(s => s.remove());
 
-    // 2. On crée le nouveau script
     const script = document.createElement('script');
     script.src = `${scriptFile}?v=${new Date().getTime()}`;
     script.className = 'dynamic-script';
@@ -127,19 +131,16 @@ function handlePageScripts(target) {
 }
 
 /**
- * 4. ÉCOUTEURS DE NAVIGATION
+ * 4. INITIALISATION GLOBALE
  */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         if (this.classList.contains('active')) return;
-        
-        const activeBtn = document.querySelector('.nav-btn.active');
-        if(activeBtn) activeBtn.classList.remove('active');
-        
+        document.querySelector('.nav-btn.active').classList.remove('active');
         this.classList.add('active');
         navigationRouter(this.getAttribute('data-target'));
     });
 });
 
 window.addEventListener('DOMContentLoaded', initDashboard);
-
+        
