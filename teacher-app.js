@@ -1,6 +1,6 @@
 /**
  * SCHOLARITE - Brain Module (Enseignant)
- * Version Corrigée pour Injection Dynamique
+ * Optimisé pour GitHub Pages & Navigation Multi-Modules
  */
 
 const eleves = [
@@ -18,19 +18,15 @@ const eleves = [
     {nom: "YENGO Raoul", sex: "M", moyenne: 41.0}
 ];
 
-// On stocke le contenu initial proprement
 let dashboardBackup = "";
 
 /**
  * 1. INITIALISATION DU DASHBOARD
  */
 function initDashboard() {
-    const mainView = document.getElementById('main-view');
     const scrollBox = document.getElementById('scroll-averages');
-    
     if(!scrollBox) return;
 
-    // Remplissage des moyennes
     scrollBox.innerHTML = eleves.map(e => `
         <div class="list-item-black">
             <span>${e.nom}</span>
@@ -56,14 +52,15 @@ function renderList(id, data, colorClass) {
 }
 
 /**
- * 2. MOTEUR DE NAVIGATION
+ * 2. MOTEUR DE NAVIGATION (ROUTER)
  */
 async function navigationRouter(target) {
     const mainView = document.getElementById('main-view');
 
-    // Sauvegarde du dashboard si ce n'est pas fait
+    // Sauvegarde du dashboard au premier clic
     if (!dashboardBackup) {
-        dashboardBackup = document.getElementById('view-dashboard').outerHTML;
+        const dashElement = document.getElementById('view-dashboard');
+        if(dashElement) dashboardBackup = dashElement.outerHTML;
     }
 
     if (target === 'view-dashboard') {
@@ -83,51 +80,66 @@ async function navigationRouter(target) {
     if (!fileName) return;
 
     try {
-        const response = await fetch(fileName);
-        if (!response.ok) throw new Error("Fichier introuvable");
-        const html = await response.text();
+        // Ajout d'un cache-breaker pour GitHub Pages (?v=...)
+        const response = await fetch(`${fileName}?v=${new Date().getTime()}`);
+        if (!response.ok) throw new Error(`Fichier ${fileName} non trouvé (Erreur ${response.status})`);
         
-        // On remplace le contenu de main-view
+        const html = await response.text();
         mainView.innerHTML = html;
 
-        // CRUCIAL : On attend un tout petit peu que le DOM soit prêt avant de lancer le script
+        // On laisse le DOM respirer avant d'injecter la logique
         setTimeout(() => {
             handlePageScripts(target);
-        }, 50);
+        }, 100);
 
     } catch (error) {
-        mainView.innerHTML = `<div class="glass-box" style="margin:20px;">Erreur : ${error.message}</div>`;
+        mainView.innerHTML = `
+            <div class="glass-box" style="margin:20px; border: 1px solid rgba(255,0,0,0.3)">
+                <h3 class="txt-red"><i class="fas fa-exclamation-triangle"></i> Module Indisponible</h3>
+                <p>Le fichier <b>${fileName}</b> semble manquant ou mal nommé sur GitHub.</p>
+                <small>${error.message}</small>
+            </div>`;
     }
 }
 
 /**
- * 3. GESTION DES SCRIPTS
+ * 3. GESTIONNAIRE DE SCRIPTS DYNAMIQUE
  */
 function handlePageScripts(target) {
-    if (target === 'view-saisie') {
-        // On force le re-chargement du script pour être sûr qu'il s'exécute sur le nouveau HTML
-        const oldScript = document.querySelector('script[src="cote-app.js"]');
-        if (oldScript) oldScript.remove();
+    // Liste des scripts par module
+    const scriptMap = {
+        'view-saisie': 'cote-app.js',
+        'view-appel': 'appel-app.js'
+    };
 
-        const script = document.createElement('script');
-        script.src = 'cote-app.js';
-        document.body.appendChild(script);
-    }
+    const scriptFile = scriptMap[target];
+    if (!scriptFile) return;
+
+    // 1. On nettoie les anciens scripts injectés pour éviter les doublons
+    const dynamicScripts = document.querySelectorAll('.dynamic-script');
+    dynamicScripts.forEach(s => s.remove());
+
+    // 2. On crée le nouveau script
+    const script = document.createElement('script');
+    script.src = `${scriptFile}?v=${new Date().getTime()}`;
+    script.className = 'dynamic-script';
+    document.body.appendChild(script);
 }
 
 /**
- * 4. ÉCOUTEURS
+ * 4. ÉCOUTEURS DE NAVIGATION
  */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         if (this.classList.contains('active')) return;
-        document.querySelector('.nav-btn.active').classList.remove('active');
+        
+        const activeBtn = document.querySelector('.nav-btn.active');
+        if(activeBtn) activeBtn.classList.remove('active');
+        
         this.classList.add('active');
         navigationRouter(this.getAttribute('data-target'));
     });
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-    initDashboard();
-});
-        
+window.addEventListener('DOMContentLoaded', initDashboard);
+
