@@ -1,98 +1,121 @@
-/* SCHOLARITE - Ultra-Glass Dashboard v2 
-   Style: Dark Glass & Semi-Transparent Rows
+/* SCHOLARITE - Recalibration Mobile Native
+   Design: Spiral Agence (Glass & Black Bands)
 */
 
 :root {
     --gold: #D4AF37;
-    /* Verre fumé inspiré de ton image */
-    --glass-panel: rgba(255, 255, 255, 0.1);
-    /* Les fameuses bandes noires semi-transparentes */
-    --row-dark: rgba(0, 0, 0, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --row-dark: rgba(0, 0, 0, 0.6); /* Noir plus profond pour le contraste */
     --border: rgba(255, 255, 255, 0.1);
-    --blur-heavy: blur(20px);
+    --blur-native: blur(25px);
 }
 
 body {
-    /* Fond assombri pour faire ressortir le flou */
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
                 url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000') center/cover no-repeat fixed;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    color: #f0f0f0; 
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #ffffff;
     margin: 0; padding: 0;
     height: 100vh; overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Le conteneur principal type "Carte" de ton image */
+/* --- STRUCTURE MOBILE --- */
+
+.content-area {
+    padding: 20px;
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+/* Suppression de la grille serrée pour des lignes pleine largeur */
+.teacher-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Plus d'espace entre les modules pour éviter les erreurs de clic */
+}
+
+/* --- CARTES ET BANDES (Le "Verre Poli") --- */
+
 .glass-box {
-    background: var(--glass-panel);
-    backdrop-filter: var(--blur-heavy);
-    -webkit-backdrop-filter: var(--blur-heavy);
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-native);
+    -webkit-backdrop-filter: var(--blur-native);
     border: 1px solid var(--border);
-    border-radius: 25px; /* Arrondis prononcés comme sur l'image */
-    padding: 15px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    position: relative;
+    border-radius: 28px; /* Arrondis très fluides type iOS/Android moderne */
+    padding: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
-/* L'élément clé : LA BANDE NOIRE (Row) */
+.glass-box h3 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    margin: 0 0 15px 0;
+    text-transform: uppercase;
+}
+
+/* LA BANDE NOIRE (L'unité de donnée ergonomique) */
 .list-item-black {
     background: var(--row-dark);
-    backdrop-filter: blur(5px);
-    border-radius: 12px; /* Bandes légèrement arrondies */
-    margin-bottom: 6px;
-    padding: 10px 15px;
+    border-radius: 18px; /* Plus arrondi pour le confort visuel */
+    margin-bottom: 10px;
+    padding: 16px 20px; /* Zone de frappe agrandie pour le pouce */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid rgba(255,255,255,0.03);
-    transition: transform 0.2s ease;
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Titres de sections Gold comme sur l'image */
-.glass-box h3 {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+/* --- NAVIGATION ET HEADER --- */
 
-/* Petit point lumineux en haut à droite des cartes (vu sur ton image) */
-.glass-box::after {
-    content: '';
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 6px;
-    height: 6px;
-    background: var(--gold);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--gold);
-}
-
-/* Header & Nav restent cohérents */
 .teacher-header {
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: var(--blur-heavy);
-    padding: 15px 20px;
+    padding: 20px;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(15px);
     border-bottom: 1px solid var(--border);
 }
 
-.mobile-nav {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(25px);
-    border-top: 1px solid var(--border);
-    height: 75px;
+.profile-mini img {
+    width: 48px; height: 48px; /* Plus grand pour être "Clean" */
+    border: 2px solid var(--gold);
+    border-radius: 50%;
 }
 
-/* Custom Scrollbar pour garder l'aspect clean */
-.scroller::-webkit-scrollbar { width: 0px; }
+.mobile-nav {
+    position: fixed; bottom: 0; width: 100%;
+    height: 85px; /* Plus haut pour ne pas gêner les gestes du téléphone */
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(30px);
+    display: flex; justify-content: space-around; align-items: center;
+    border-top: 1px solid var(--border);
+    padding-bottom: env(safe-area-inset-bottom); /* Support iPhone notch bas */
+}
 
-/* Status Labels */
-.txt-green { color: #4ade80; font-weight: 600; } /* Vert plus vif type Admin */
-.txt-red { color: #fb7185; font-weight: 600; }   /* Rouge pastel type Admin */
+.nav-btn {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 5px; color: rgba(255,255,255,0.4);
+}
+
+.nav-btn.active { color: var(--gold); }
+.nav-btn i { font-size: 1.6rem; }
+
+/* --- ÉLÉMENTS GRAPHIQUES --- */
+
+.date-card {
+    background: var(--gold);
+    color: #000;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    width: fit-content;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+.txt-green { color: #32D74B; font-weight: 700; } /* Vert Apple (lisible) */
+.txt-red { color: #FF453A; font-weight: 700; }   /* Rouge Apple (lisible) */
    
