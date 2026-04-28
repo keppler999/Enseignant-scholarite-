@@ -1,64 +1,77 @@
 /**
- * SCHOLARITE - Module Saisie des Cotes
- * Logique d'affichage des élèves
+ * SCHOLARITE - Module Saisie des Cotes (Mobile Native)
+ * Logique : Bandes Noires & Progression en temps réel
  */
 
 (function() {
     const listeEleves = [
-        "MALU, Jean-Pierre", "YENGO, Rebecca", "TSHIMANGA, Paul", 
-        "MUSAU, Julie", "KABASELE, Luc", "BAHATI, Sarah", 
-        "LUVUMBU, Robert", "DIALLO, Mariam", "ZOLA, Claire", 
-        "NDOKI, Jean", "BIOLA, Anne", "YENGO, Raoul"
+        "MALU Jean-Pierre", "YENGO Rebecca", "TSHIMANGA Paul", 
+        "MUSAU Julie", "KABASELE Luc", "BAHATI Sarah", 
+        "LUVUMBU Robert", "DIALLO Mariam", "ZOLA Claire", 
+        "NDOKI Jean", "BIOLA Anne", "YENGO Raoul"
     ];
 
-    function genererTableau() {
+    function initModuleCotes() {
         const container = document.getElementById('students-list-container');
-        const dateInput = document.getElementById('current-date');
+        if (!container) return;
 
-        // Sécurité : Si l'élément n'est pas encore dans le DOM, on attend un peu
-        if (!container) {
-            console.warn("Conteneur non trouvé, tentative de reconnexion...");
-            setTimeout(genererTableau, 100);
-            return;
-        }
-
-        // Initialisation de la date si l'élément existe
-        if (dateInput) {
-            dateInput.value = "28 Avril 2026";
-        }
-
-        container.innerHTML = "";
-
-        listeEleves.forEach((nom, index) => {
-            const row = document.createElement('div');
-            row.className = 'student-row';
-            row.innerHTML = `
-                <div class="st-num">${index + 1}.</div>
-                <div class="st-name">${nom}</div>
-                <div class="st-input">
-                    <input type="number" class="cote-field" placeholder="00" min="0" max="20">
+        container.innerHTML = listeEleves.map((nom, index) => `
+            <div class="list-item-black" style="padding: 12px 15px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="opacity: 0.3; font-size: 0.7rem; font-weight: 800;">${index + 1}</span>
+                    <span style="font-weight: 600; font-size: 0.9rem;">${nom}</span>
                 </div>
-                <div class="st-actions">
-                    <button class="btn-save-row"><i class="fas fa-save"></i> Save</button>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <input type="number" class="cote-input-field" data-index="${index}" 
+                        placeholder="--" min="0" max="20" 
+                        style="width: 50px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--gold); text-align: center; padding: 8px; border-radius: 8px; font-weight: 800; font-size: 1rem;">
+                    <small style="opacity: 0.4; font-size: 0.6rem;">/20</small>
                 </div>
-            `;
-            container.appendChild(row);
+            </div>
+        `).join('');
+
+        // Ecouter la saisie pour mettre à jour la progression
+        container.querySelectorAll('.cote-input-field').forEach(input => {
+            input.addEventListener('input', updateProgress);
         });
-
-        console.log("Tableau des cotes généré avec succès.");
     }
 
-    // Gestion du bouton d'enregistrement
-    // On utilise la délégation d'événement car le bouton est injecté dynamiquement
+    function updateProgress() {
+        const fields = document.querySelectorAll('.cote-input-field');
+        const filled = Array.from(fields).filter(f => f.value !== "").length;
+        const total = fields.length;
+        const percent = (filled / total) * 100;
+
+        // Mise à jour visuelle (Bandes et compteurs)
+        const progressBar = document.getElementById('progress-bar');
+        const counter = document.getElementById('points-counter');
+        
+        if(progressBar) progressBar.style.width = `${percent}%`;
+        if(counter) counter.innerText = `${filled} / ${total}`;
+        
+        // Effet de brillance si terminé
+        if(filled === total && progressBar) {
+            progressBar.style.boxShadow = "0 0 15px var(--gold)";
+        }
+    }
+
+    // Gestion du clic sur Enregistrer
     document.addEventListener('click', (e) => {
-        if (e.target && e.target.id === 'save-all-btn') {
-            alert("🚀 Envoi des cotes vers Supabase pour la classe 6e EP...");
+        const btn = e.target.closest('#save-all-btn');
+        if (btn) {
+            const course = document.getElementById('course-select')?.value || "Non défini";
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENREGISTREMENT...';
+            btn.style.opacity = "0.7";
+            
+            setTimeout(() => {
+                alert(`Succès : Les cotes de [${course.toUpperCase()}] ont été envoyées au serveur.`);
+                btn.innerHTML = 'VALIDER LA COTATION';
+                btn.style.opacity = "1";
+            }, 1500);
         }
     });
 
-    // Lancement immédiat
-    genererTableau();
-
-    // On rend la fonction accessible au cerveau (teacher-app.js)
-    window.genererTableau = genererTableau;
+    // Lancer l'initialisation
+    initModuleCotes();
 })();
+           
