@@ -1,6 +1,6 @@
 /**
  * SCHOLARITE - Brain Module (Mobile Native Edition)
- * Focus : Moteur de navigation & Intégration Carnet
+ * Version Finale : Dashboard + Appel + Notes + Carnet + Journal
  */
 
 const eleves = [
@@ -37,7 +37,7 @@ function initDashboard() {
         </div>
     `).join('') + `
         <div style="text-align: center; padding: 10px;">
-            <small style="color: var(--gold); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 1px;">Système Scholarite v2.0 - Actif</small>
+            <small style="color: var(--gold); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 1px;">Écosystème Scholarite • Connecté</small>
         </div>
     `;
 }
@@ -48,6 +48,7 @@ function initDashboard() {
 async function navigationRouter(target) {
     const mainView = document.getElementById('main-view');
 
+    // Sauvegarde du dashboard
     const dashElement = document.getElementById('view-dashboard');
     if (dashElement && !dashboardBackup) {
         dashboardBackup = dashElement.outerHTML;
@@ -59,7 +60,7 @@ async function navigationRouter(target) {
         return;
     }
 
-    // --- ROUTES MISES À JOUR (Carnet inclus) ---
+    // --- CONFIGURATION DES ROUTES (Appel des fichiers HTML) ---
     const routes = {
         'view-saisie': 'notes.html',
         'view-appel': 'appel.html',
@@ -70,10 +71,11 @@ async function navigationRouter(target) {
     const fileName = routes[target];
     if (!fileName) return;
 
+    // Loader Elegant Spiral Agence
     mainView.innerHTML = `
-        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:50vh; gap:15px;">
-            <div class="txt-gold" style="font-weight:800; letter-spacing:2px; animation: pulse 1.5s infinite;">SPIRAL AGENCE</div>
-            <small style="opacity:0.5;">Accès au module sécurisé...</small>
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:60vh; gap:20px;">
+            <div class="txt-gold" style="font-weight:900; letter-spacing:4px; animation: pulse 1.5s infinite;">SCHOLARITE</div>
+            <div style="width: 40px; height: 2px; background: var(--gold); animation: expandWidth 1s infinite alternate;"></div>
         </div>`;
 
     try {
@@ -83,16 +85,17 @@ async function navigationRouter(target) {
         const html = await response.text();
         mainView.innerHTML = html;
 
+        // Délai de rendu pour stabilité mobile
         setTimeout(() => {
             handlePageScripts(target);
-        }, 100);
+        }, 120);
 
     } catch (error) {
         mainView.innerHTML = `
-            <div class="glass-box" style="margin:20px; text-align:center;">
-                <i class="fas fa-plug txt-red" style="font-size:2rem; margin-bottom:15px;"></i>
-                <h3 class="txt-red">MODULE NON DISPONIBLE</h3>
-                <p style="font-size:0.8rem; opacity:0.6;">Le fichier <b>${fileName}</b> est manquant.</p>
+            <div class="glass-box" style="margin:20px; text-align:center; border: 1px solid rgba(255, 74, 74, 0.2);">
+                <i class="fas fa-wifi-slash txt-red" style="font-size:2rem; margin-bottom:15px;"></i>
+                <h3 class="txt-red" style="font-size: 0.9rem;">MODULE INDISPONIBLE</h3>
+                <p style="font-size:0.75rem; opacity:0.6;">Vérifiez votre connexion ou l'existence de <b>${fileName}</b>.</p>
             </div>`;
     }
 }
@@ -101,16 +104,18 @@ async function navigationRouter(target) {
  * 3. GESTION DES SCRIPTS DYNAMIQUES
  */
 function handlePageScripts(target) {
-    // --- SCRIPT MAP MIS À JOUR ---
+    // --- LIAISON DES LOGIQUES JS ---
     const scriptMap = {
         'view-saisie': 'notes-app.js',
         'view-appel': 'appel-app.js',
-        'view-carnet': 'carnet-app.js'
+        'view-carnet': 'carnet-app.js',
+        'view-journal': 'journal-app.js' // Activation du flux direction
     };
 
     const scriptFile = scriptMap[target];
     if (!scriptFile) return;
 
+    // Suppression des anciens scripts injectés
     document.querySelectorAll('.dynamic-script').forEach(s => s.remove());
 
     const script = document.createElement('script');
@@ -120,14 +125,14 @@ function handlePageScripts(target) {
 }
 
 /**
- * 4. EVENT LISTENERS
+ * 4. EVENT LISTENERS & INITIALISATION
  */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         if (this.classList.contains('active')) return;
         
-        const activeBtn = document.querySelector('.nav-btn.active');
-        if(activeBtn) activeBtn.classList.remove('active');
+        const currentActive = document.querySelector('.nav-btn.active');
+        if(currentActive) currentActive.classList.remove('active');
         
         this.classList.add('active');
         navigationRouter(this.getAttribute('data-target'));
@@ -135,4 +140,3 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 });
 
 window.addEventListener('DOMContentLoaded', initDashboard);
-
