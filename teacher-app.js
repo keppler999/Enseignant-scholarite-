@@ -1,6 +1,6 @@
 /**
- * SCHOLARITE - Brain Module (Admin Edition)
- * Optimisé pour le design "Bandes Noires" & Glassmorphism
+ * SCHOLARITE - Brain Module (Mobile Native Edition)
+ * Focus : Ergonomie tactile & Performance
  */
 
 const eleves = [
@@ -22,43 +22,27 @@ let dashboardBackup = "";
 
 /**
  * 1. INITIALISATION DU DASHBOARD
- * Génère les bandes noires semi-transparentes
+ * Affiche uniquement les informations essentielles pour un usage mobile rapide
  */
 function initDashboard() {
-    const scrollBox = document.getElementById('scroll-averages');
-    if(!scrollBox) return;
+    // On cible le conteneur de "Pointage Rapide" sur le Dashboard
+    const quickPointage = document.getElementById('top-5');
+    if(!quickPointage) return;
 
-    // Remplissage avec le style "Admin Row"
-    scrollBox.innerHTML = eleves.map(e => `
-        <div class="list-item-black">
-            <span style="font-weight: 500;">${e.nom}</span>
-            <span class="${e.moyenne < 50 ? 'txt-red' : 'txt-gold'}" style="font-weight: 800;">
-                ${e.moyenne}%
-            </span>
-        </div>
-    `).join('');
-
-    const sorted = [...eleves].sort((a,b) => b.moyenne - a.moyenne);
-    
-    // Top 5 avec badges Gold
-    renderList('top-5', sorted.slice(0, 5), 'txt-gold');
-    // Bottom 5 avec alertes Rouges
-    renderList('bottom-5', sorted.slice(-5).reverse(), 'txt-red');
-}
-
-function renderList(id, data, colorClass) {
-    const container = document.getElementById(id);
-    if(container) {
-        container.innerHTML = data.map((e, index) => `
-            <div class="list-item-black">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <small style="opacity:0.4; font-size:0.6rem;">0${index+1}</small>
-                    <span>${e.nom}</span>
-                </div>
-                <span class="${colorClass}">${e.moyenne}%</span>
+    // On affiche les 3 premiers élèves pour un accès rapide (Gain de place)
+    quickPointage.innerHTML = eleves.slice(0, 3).map(e => `
+        <div class="list-item-black" style="border-left: 3px solid var(--gold);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 8px; height: 8px; border-radius: 50%; background: #4ade80;"></div>
+                <span>${e.nom}</span>
             </div>
-        `).join('');
-    }
+            <i class="fas fa-chevron-right" style="opacity: 0.3; font-size: 0.7rem;"></i>
+        </div>
+    `).join('') + `
+        <div style="text-align: center; padding: 10px;">
+            <small style="color: var(--gold); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 1px;">Voir toute la liste dans l'onglet Appel</small>
+        </div>
+    `;
 }
 
 /**
@@ -67,6 +51,7 @@ function renderList(id, data, colorClass) {
 async function navigationRouter(target) {
     const mainView = document.getElementById('main-view');
 
+    // Sauvegarde la structure initiale du dashboard si ce n'est pas fait
     if (!dashboardBackup) {
         const dashElement = document.getElementById('view-dashboard');
         if(dashElement) dashboardBackup = dashElement.outerHTML;
@@ -88,30 +73,33 @@ async function navigationRouter(target) {
     const fileName = routes[target];
     if (!fileName) return;
 
+    // Feedback visuel de chargement
+    mainView.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:60vh;">
+                            <div class="txt-gold" style="animation: pulse 1s infinite;">Chargement...</div>
+                          </div>`;
+
     try {
-        // Cache-breaker pour forcer la mise à jour sur GitHub
         const response = await fetch(`${fileName}?v=${new Date().getTime()}`);
-        if (!response.ok) throw new Error(`Fichier ${fileName} introuvable`);
+        if (!response.ok) throw new Error("Fichier manquant");
         
         const html = await response.text();
         mainView.innerHTML = html;
 
         setTimeout(() => {
             handlePageScripts(target);
-        }, 100);
+        }, 50);
 
     } catch (error) {
         mainView.innerHTML = `
             <div class="glass-box" style="margin:20px; text-align:center;">
-                <i class="fas fa-plug txt-red" style="font-size:2rem; margin-bottom:10px;"></i>
-                <h3 class="txt-red">ERREUR DE CHARGEMENT</h3>
-                <p style="font-size:0.8rem;">Module <b>${fileName}</b> non détecté.</p>
+                <h3 class="txt-red">ERREUR</h3>
+                <p style="font-size:0.8rem;">Impossible de charger le module.</p>
             </div>`;
     }
 }
 
 /**
- * 3. GESTION DES SCRIPTS DYNAMIQUES
+ * 3. GESTION DES SCRIPTS
  */
 function handlePageScripts(target) {
     const scriptMap = {
@@ -131,7 +119,7 @@ function handlePageScripts(target) {
 }
 
 /**
- * 4. INITIALISATION GLOBALE
+ * 4. EVENT LISTENERS
  */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -143,4 +131,4 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 });
 
 window.addEventListener('DOMContentLoaded', initDashboard);
-        
+
