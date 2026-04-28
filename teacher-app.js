@@ -13,10 +13,12 @@ const eleves = [
     {nom: "YENGO Raoul", sex: "M", moyenne: 41.0}
 ];
 
-// 1. REMPLISSAGE DASHBOARD
+// 1. CHARGEMENT DU DASHBOARD (Initialisation)
 function loadDashboard() {
-    // Moyennes défilantes
     const scrollBox = document.getElementById('scroll-averages');
+    if(!scrollBox) return; // Sécurité si on n'est pas sur le dash
+
+    scrollBox.innerHTML = ""; // On vide avant de remplir
     eleves.forEach(e => {
         scrollBox.innerHTML += `
             <div class="list-item-black">
@@ -26,10 +28,12 @@ function loadDashboard() {
         `;
     });
 
-    // Top 5 et Bottom 5
     const sorted = [...eleves].sort((a,b) => b.moyenne - a.moyenne);
     const topBox = document.getElementById('top-5');
     const bottomBox = document.getElementById('bottom-5');
+
+    topBox.innerHTML = ""; 
+    bottomBox.innerHTML = "";
 
     sorted.slice(0, 5).forEach(e => {
         topBox.innerHTML += `<div class="list-item-black"><span>${e.nom}</span> <span class="txt-green">${e.moyenne}%</span></div>`;
@@ -40,40 +44,58 @@ function loadDashboard() {
     });
 }
 
-// 2. GESTION NAVIGATION (TABS)
+// 2. LE MOTEUR DE NAVIGATION (Chargement des fichiers externes)
+async function chargerPage(target, fileName) {
+    const mainView = document.getElementById('main-view');
+    
+    try {
+        const response = await fetch(fileName);
+        if (!response.ok) throw new Error("Fichier non trouvé");
+        const html = await response.text();
+        
+        // On injecte le contenu dans la zone d'affichage
+        mainView.innerHTML = html;
+
+        // LOGIQUE SPÉCIFIQUE SELON LA PAGE
+        if (target === 'view-saisie') {
+            // Si on charge la page cote, on active sa logique
+            if (typeof genererTableau === "function") {
+                genererTableau(); 
+            } else {
+                // Charge le script si pas encore présent
+                let script = document.createElement('script');
+                script.src = 'cote-app.js';
+                document.body.appendChild(script);
+            }
+        }
+    } catch (error) {
+        mainView.innerHTML = `<div class="glass-box">Erreur de chargement : ${error.message}</div>`;
+    }
+}
+
+// 3. ÉCOUTEUR DE CLICS SUR LE MENU
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        // Switch active menu
+        // Style visuel du menu
         document.querySelector('.nav-btn.active').classList.remove('active');
         btn.classList.add('active');
 
-        // Switch active view
         const target = btn.getAttribute('data-target');
-        document.querySelectorAll('.tab-content').forEach(v => v.classList.remove('active'));
-        document.getElementById(target).classList.add('active');
 
-        if(target === 'view-saisie') renderSaisie();
+        // ROUTAGE DES PAGES
+        if (target === 'view-dashboard') {
+            // On peut soit recharger le contenu HTML du dash, soit rafraîchir
+            location.reload(); 
+        } 
+        else if (target === 'view-saisie') {
+            chargerPage('view-saisie', 'cote.html');
+        }
+        else if (target === 'view-carnet') {
+            chargerPage('view-carnet', 'carnet.html'); // Prépare déjà le futur fichier
+        }
     });
 });
 
-// 3. FONCTION DE RENDU SAISIE (Exemple intelligent)
-function renderSaisie() {
-    const view = document.getElementById('view-saisie');
-    view.innerHTML = `
-        <div class="glass-box" style="margin: 15px;">
-            <h3>Saisie des Cotes</h3>
-            <select class="input-glass"><option>Français</option><option>Maths</option></select>
-            <div class="saisie-table">
-                ${eleves.map(e => `
-                    <div class="list-item-black">
-                        <span>${e.nom}</span>
-                        <input type="number" placeholder="/20" class="mini-input">
-                    </div>
-                `).join('')}
-            </div>
-            <button class="btn-gold">ENREGISTRER TOUT</button>
-        </div>
-    `;
-}
-
-loadDashboard();
+// Lancement au démarrage
+window.onload = loadDashboard;
+        
