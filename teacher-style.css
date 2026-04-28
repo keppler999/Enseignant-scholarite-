@@ -1,108 +1,73 @@
 /**
  * SCHOLARITE - Signature Design by Spiral Agence
- * Recalibration : Avatar Enseignant & Menu Trigger Precision
+ * Recalibration : Avatar, Menu Trigger & Verrouillage Tiroir
  */
 
 :root {
     --gold: #D4AF37;
     --gold-glow: rgba(212, 175, 55, 0.4);
-    --glass-premium: rgba(0, 0, 0, 0.75);
+    --glass-premium: rgba(10, 10, 10, 0.85);
+    --row-black: rgba(0, 0, 0, 0.85);
+    --border-gold: rgba(212, 175, 55, 0.3);
     --border-white: rgba(255, 255, 255, 0.1);
     --blur-native: blur(35px);
 }
 
-/* --- RECALIBRAGE AVATAR ENSEIGNANT --- */
-.profile-mini {
+body {
+    background: #000 url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000') center/cover no-repeat fixed;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #fff;
+    margin: 0;
+    min-height: 100vh;
+    overflow-y: auto; /* Permet le scroll de haut en bas */
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- LE TIROIR (SIDE DRAWER) - Verrouillage Antidébordement --- */
+.side-drawer {
+    position: fixed;
+    top: 0;
+    right: -105%; /* Complètement hors champ */
+    width: 85%;
+    height: 100vh;
+    z-index: 3000; /* Priorité absolue sur tout */
+    background: var(--glass-premium);
+    backdrop-filter: var(--blur-native);
+    -webkit-backdrop-filter: var(--blur-native);
+    border-left: 1.5px solid var(--border-gold);
+    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    visibility: hidden; /* Empêche les clics fantômes */
+}
+
+.side-drawer.active {
+    right: 0;
+    visibility: visible;
+    box-shadow: -15px 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.drawer-content {
+    padding: 40px 20px;
+    height: 100%;
+}
+
+.drawer-item {
+    background: var(--row-black) !important;
+    border: 1px solid var(--border-white) !important;
+    border-radius: 18px !important;
+    padding: 18px 20px !important;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
-    gap: 12px;
-}
-
-.profile-mini img {
-    width: 42px !important;
-    height: 42px !important;
-    object-fit: cover;
-    border-radius: 14px; /* Format Squircle Premium */
-    border: 1.5px solid var(--gold);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    background: #1a1a1a;
-}
-
-.profile-info h4 {
-    margin: 0;
-    font-size: 0.8rem;
-    font-weight: 800;
-    letter-spacing: 0.3px;
-    color: #ffffff;
-}
-
-.profile-info small {
-    display: block;
-    font-size: 0.6rem;
-    color: var(--gold);
-    opacity: 0.8;
+    gap: 15px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* --- RECALIBRAGE DEUX BARRES (Menu Trigger) --- */
-.hamburger-menu {
-    width: 30px;
-    height: 30px;
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 5px;
-    cursor: pointer;
-    padding-right: 5px;
-}
-
-.bar-top { 
-    width: 24px; 
-    height: 2.5px; 
-    background: var(--gold); 
-    border-radius: 4px;
-    box-shadow: 0 0 8px var(--gold-glow);
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.bar-bottom { 
-    width: 16px; 
-    height: 2.5px; 
-    background: var(--gold); 
-    border-radius: 4px;
-    box-shadow: 0 0 8px var(--gold-glow);
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Effet au clic pour simuler du natif */
-.hamburger-menu:active .bar-top,
-.hamburger-menu:active .bar-bottom {
-    transform: scaleX(0.85);
-    opacity: 0.7;
-}
-
-/* --- TITRE CENTRAL --- */
-.brand-small {
-    font-size: 0.85rem;
-    font-weight: 900;
-    letter-spacing: 4px;
-    color: var(--gold) !important;
-    text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    pointer-events: none;
 }
 
 /* --- HEADER CONTAINER --- */
 .teacher-header {
     position: sticky;
     top: 0;
-    height: 70px; /* Hauteur fixe pour stabilité */
-    background: var(--glass-premium);
+    height: 75px;
+    background: rgba(0, 0, 0, 0.75);
     backdrop-filter: var(--blur-native);
     -webkit-backdrop-filter: var(--blur-native);
     border-bottom: 1px solid var(--border-white);
@@ -119,3 +84,72 @@
     padding: 0 20px;
 }
 
+/* --- AVATAR ENSEIGNANT --- */
+.profile-mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-mini img {
+    width: 44px !important;
+    height: 44px !important;
+    object-fit: cover;
+    border-radius: 12px; /* Squircle */
+    border: 1.5px solid var(--gold);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+/* --- TITRE CENTRAL (Alignement Chirurgical) --- */
+.brand-small {
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--gold) !important;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    text-transform: uppercase;
+}
+
+/* --- MENU TRIGGER (Les deux barres) --- */
+.hamburger-menu {
+    width: 32px;
+    height: 32px;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.bar-top { 
+    width: 24px; 
+    height: 2.5px; 
+    background: var(--gold); 
+    border-radius: 4px;
+    box-shadow: 0 0 8px var(--gold-glow);
+}
+
+.bar-bottom { 
+    width: 16px; 
+    height: 2.5px; 
+    background: var(--gold); 
+    border-radius: 4px;
+    box-shadow: 0 0 8px var(--gold-glow);
+}
+
+/* --- CONTENU --- */
+.content-area {
+    padding: 20px 20px 100px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* --- COULEURS ET VALEURS --- */
+.txt-green { color: #32D74B !important; font-weight: 800; }
+.txt-red { color: #FF453A !important; font-weight: 800; }
+.txt-gold { color: var(--gold) !important; }
