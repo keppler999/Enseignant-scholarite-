@@ -1,6 +1,6 @@
 /**
  * SCHOLARITE - Brain Module (Mobile Native Edition)
- * Version : Stabilisation Header & Side Drawer
+ * Logic : Navigation, Side Drawer & Data Rendering
  */
 
 const eleves = [
@@ -22,58 +22,58 @@ let dashboardBackup = "";
 
 /**
  * 1. INITIALISATION DU DASHBOARD
+ * Rendu des "Bandes Noires" Signature
  */
 function initDashboard() {
     const quickPointage = document.getElementById('top-5');
     if(!quickPointage) return;
 
     quickPointage.innerHTML = eleves.slice(0, 3).map(e => `
-        <div class="list-item-black" style="border-left: 3px solid var(--gold);">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 8px; height: 8px; border-radius: 50%; background: #4ade80;"></div>
-                <span style="font-size: 0.8rem;">${e.nom}</span>
+        <div class="list-item-black" style="border-left: 2.5px solid var(--gold);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px #4ade80;"></div>
+                <span class="label" style="font-size: 0.85rem; font-weight: 600;">${e.nom}</span>
             </div>
-            <i class="fas fa-chevron-right" style="opacity: 0.3; font-size: 0.7rem;"></i>
+            <i class="fas fa-chevron-right" style="opacity: 0.2; font-size: 0.7rem;"></i>
         </div>
     `).join('') + `
-        <div style="text-align: center; padding: 10px;">
-            <small style="color: var(--gold); text-transform: uppercase; font-size: 0.55rem; letter-spacing: 1px;">Écosystème Scholarite • Connecté</small>
+        <div style="text-align: center; padding-top: 15px; opacity: 0.4;">
+            <small style="text-transform: uppercase; font-size: 0.5rem; letter-spacing: 2px;">Data Sync • Kinshasa Server</small>
         </div>
     `;
 }
 
 /**
- * 2. GESTION DU MENU LATÉRAL (Drawer)
+ * 2. GESTION DU MENU LATÉRAL (Side Drawer)
  */
 function setupSideDrawer() {
     const trigger = document.getElementById('menu-trigger');
     const drawer = document.getElementById('side-drawer');
     const closeBtn = document.getElementById('close-drawer');
 
-    if (trigger && drawer) {
-        // On clone pour éviter les doublons d'écouteurs d'événements
-        const newTrigger = trigger.cloneNode(true);
-        trigger.parentNode.replaceChild(newTrigger, trigger);
+    if (!trigger || !drawer) return;
 
-        newTrigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            drawer.classList.add('active');
-        });
+    // Reset Event Listeners (Clone Technique)
+    const newTrigger = trigger.cloneNode(true);
+    trigger.parentNode.replaceChild(newTrigger, trigger);
 
-        if (closeBtn) {
-            closeBtn.onclick = () => drawer.classList.remove('active');
-        }
+    newTrigger.addEventListener('click', () => {
+        drawer.classList.add('active');
+    });
 
-        // Gestion des clics options
-        document.querySelectorAll('.drawer-item').forEach(item => {
-            item.onclick = function() {
-                const target = this.getAttribute('data-target');
-                drawer.classList.remove('active');
-                console.log("Action demandée : " + target);
-                // navigationRouter(target); // À activer quand les fichiers seront prêts
-            };
-        });
+    if (closeBtn) {
+        closeBtn.onclick = () => drawer.classList.remove('active');
     }
+
+    // Fermeture auto sur sélection
+    document.querySelectorAll('.drawer-item').forEach(item => {
+        item.onclick = function() {
+            const target = this.getAttribute('data-target');
+            drawer.classList.remove('active');
+            console.log("Spiral Engine : Target " + target);
+            // navigationRouter(target); 
+        };
+    });
 }
 
 /**
@@ -83,6 +83,7 @@ async function navigationRouter(target) {
     const mainView = document.getElementById('main-view');
     const dashElement = document.getElementById('view-dashboard');
 
+    // Mise en cache du Dashboard original
     if (dashElement && !dashboardBackup) {
         dashboardBackup = dashElement.outerHTML;
     }
@@ -103,10 +104,11 @@ async function navigationRouter(target) {
     const fileName = routes[target];
     if (!fileName) return;
 
+    // Transition State (Spiral Agence Style)
     mainView.innerHTML = `
-        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:60vh; gap:20px;">
-            <div class="txt-gold" style="font-weight:900; letter-spacing:4px; animation: pulse 1.5s infinite; font-size: 0.8rem;">SCHOLARITE</div>
-            <div style="width: 30px; height: 1.5px; background: var(--gold);"></div>
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:50vh; gap:15px;">
+            <div class="brand-small" style="animation: pulse 1.5s infinite;">SCHOLARITE</div>
+            <div style="width: 25px; height: 1.5px; background: var(--gold); border-radius: 10px;"></div>
         </div>`;
 
     try {
@@ -118,20 +120,20 @@ async function navigationRouter(target) {
 
         setTimeout(() => {
             handlePageScripts(target);
-        }, 120);
+        }, 150);
 
     } catch (error) {
         mainView.innerHTML = `
-            <div class="glass-box" style="margin:20px; text-align:center; border: 1px solid rgba(255, 69, 58, 0.2);">
-                <i class="fas fa-wifi-slash txt-red" style="font-size:1.5rem; margin-bottom:10px;"></i>
-                <h3 class="txt-red" style="font-size:0.7rem;">MODULE INDISPONIBLE</h3>
-                <p style="font-size:0.65rem; opacity:0.6;">Le fichier <b>${fileName}</b> est manquant.</p>
+            <div class="glass-box" style="margin:20px; text-align:center; border: 1px solid rgba(255, 69, 58, 0.15);">
+                <i class="fas fa-exclamation-triangle txt-red" style="font-size:1.5rem; margin-bottom:12px;"></i>
+                <h3 class="txt-red" style="font-size:0.75rem; letter-spacing:1px;">ERREUR DE CHARGEMENT</h3>
+                <p style="font-size:0.65rem; opacity:0.5;">Le module est introuvable ou hors ligne.</p>
             </div>`;
     }
 }
 
 /**
- * 4. GESTION DES SCRIPTS
+ * 4. GESTION DES SCRIPTS DYNAMIQUES
  */
 function handlePageScripts(target) {
     const scriptMap = {
@@ -152,7 +154,7 @@ function handlePageScripts(target) {
 }
 
 /**
- * 5. INITIALISATION
+ * 5. EVENT BINDING & DOM READY
  */
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
