@@ -1,6 +1,6 @@
 /**
- * SCHOLARITE - Module Appel (Spiral Agence)
- * Version Ultra-Glass avec Avatars
+ * SCHOLARITE - Module Appel (Admin Version)
+ * Style : Black-Bands & Gold Accents
  */
 
 (function() {
@@ -24,20 +24,20 @@
         if (!container) return;
 
         container.innerHTML = listeEleves.map((eleve, index) => `
-            <div class="list-item-black" id="row-${index}" style="align-items: center; padding: 12px; transition: all 0.4s ease;">
+            <div class="list-item-black" id="row-${index}" style="margin-bottom: 8px; border-left: 3px solid transparent;">
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <img src="${eleve.img}" style="width: 35px; height: 35px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);">
+                    <img src="${eleve.img}" style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border);">
                     <div>
-                        <div style="font-weight: 600; font-size: 0.9rem;">${eleve.nom}</div>
-                        <div style="font-size: 0.65rem; opacity: 0.6;">Élève n°${index + 1}</div>
+                        <div style="font-weight: 600; font-size: 0.85rem;">${eleve.nom}</div>
+                        <small style="opacity: 0.4; font-size: 0.6rem;">ID: EP6-${100 + index}</small>
                     </div>
                 </div>
                 
-                <div class="status-toggles" style="display: flex; gap: 8px;">
-                    <button class="btn-status p-btn" onclick="setPresence(${index}, 'present')" 
-                        style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid rgba(46, 204, 113, 0.4); background: transparent; color: #fff; cursor: pointer;">P</button>
-                    <button class="btn-status a-btn" onclick="setPresence(${index}, 'absent')" 
-                        style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid rgba(231, 76, 60, 0.4); background: transparent; color: #fff; cursor: pointer;">A</button>
+                <div class="status-toggles" style="display: flex; gap: 6px;">
+                    <button class="p-btn" onclick="setPresence(${index}, 'present')" 
+                        style="width: 30px; height: 30px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.7rem; cursor: pointer; transition: 0.3s;">P</button>
+                    <button class="a-btn" onclick="setPresence(${index}, 'absent')" 
+                        style="width: 30px; height: 30px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.7rem; cursor: pointer; transition: 0.3s;">A</button>
                 </div>
             </div>
         `).join('');
@@ -48,36 +48,40 @@
         const pBtn = row.querySelector('.p-btn');
         const aBtn = row.querySelector('.a-btn');
 
-        // Reset
-        pBtn.style.background = "transparent";
+        // Reset des styles pour le mode "Admin Dark"
+        pBtn.style.background = "rgba(255,255,255,0.05)";
+        pBtn.style.borderColor = "rgba(255,255,255,0.1)";
         pBtn.style.boxShadow = "none";
-        aBtn.style.background = "transparent";
+        
+        aBtn.style.background = "rgba(255,255,255,0.05)";
+        aBtn.style.borderColor = "rgba(255,255,255,0.1)";
         aBtn.style.boxShadow = "none";
-        row.style.background = "rgba(255, 255, 255, 0.05)";
 
         if (status === 'present') {
-            pBtn.style.background = "#2ecc71";
-            pBtn.style.boxShadow = "0 0 10px rgba(46, 204, 113, 0.5)";
-            row.style.background = "rgba(46, 204, 113, 0.15)";
-            row.style.borderLeft = "4px solid #2ecc71";
+            pBtn.style.background = "#4ade80"; // Vert vif Admin
+            pBtn.style.borderColor = "#4ade80";
+            pBtn.style.boxShadow = "0 0 12px rgba(74, 222, 128, 0.4)";
+            row.style.borderLeftColor = "#4ade80";
+            row.style.background = "rgba(74, 222, 128, 0.08)";
         } else {
-            aBtn.style.background = "#e74c3c";
-            aBtn.style.boxShadow = "0 0 10px rgba(231, 76, 60, 0.5)";
-            row.style.background = "rgba(231, 76, 60, 0.15)";
-            row.style.borderLeft = "4px solid #e74c3c";
+            aBtn.style.background = "#fb7185"; // Rouge vif Admin
+            aBtn.style.borderColor = "#fb7185";
+            aBtn.style.boxShadow = "0 0 12px rgba(251, 113, 133, 0.4)";
+            row.style.borderLeftColor = "#fb7185";
+            row.style.background = "rgba(251, 113, 133, 0.08)";
         }
         updateStats();
     };
 
     function updateStats() {
-        // On compte les boutons qui ont un fond coloré
-        const presents = Array.from(document.querySelectorAll('.p-btn')).filter(b => b.style.background !== "transparent").length;
-        const absents = Array.from(document.querySelectorAll('.a-btn')).filter(b => b.style.background !== "transparent").length;
+        const presents = Array.from(document.querySelectorAll('.p-btn')).filter(b => b.style.background !== "rgba(255, 255, 255, 0.05)").length;
+        const absents = Array.from(document.querySelectorAll('.a-btn')).filter(b => b.style.background !== "rgba(255, 255, 255, 0.05)").length;
         
         document.getElementById('total-present').innerText = presents;
         document.getElementById('total-absent').innerText = absents;
     }
 
-    initAppel();
+    // Petit délai pour s'assurer que le DOM est injecté
+    setTimeout(initAppel, 50);
 })();
-            
+        
