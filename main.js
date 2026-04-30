@@ -5,7 +5,8 @@
 
 // Importation des modules nécessaires
 import { supabase } from './supabase-client.js';
-import { renderCasier } from './casier.js'; // Import du module Casier
+import { renderCasier } from './casier.js'; 
+import { renderNotes } from './notes.js'; // Import du module Notes
 
 // Sélection des éléments du DOM
 const appRoot = document.getElementById('app-root');
@@ -21,7 +22,6 @@ async function loadView(viewName) {
     });
 
     // 2. Chargement du contenu
-    // On nettoie le contenu actuel avant d'injecter le nouveau
     appRoot.innerHTML = `<div class="glass-card"><p>Chargement du module ${viewName}...</p></div>`;
 
     try {
@@ -31,7 +31,8 @@ async function loadView(viewName) {
                 break;
                 
             case 'notes':
-                appRoot.innerHTML = `<h1>Saisie des Cotes</h1>`;
+                // Appel du module de saisie des cotes
+                renderNotes(appRoot);
                 break;
                 
             case 'appel':
@@ -39,8 +40,7 @@ async function loadView(viewName) {
                 break;
                 
             case 'casier':
-                // Appel de la fonction définie dans casier.js
-                // On passe appRoot pour que le module sache où s'afficher
+                // Appel du module Casier
                 renderCasier(appRoot); 
                 break;
                 
@@ -61,12 +61,12 @@ async function loadView(viewName) {
 navButtons.forEach(btn => {
     btn.addEventListener('click', () => {
         const view = btn.dataset.view;
-        loadView(view); // Changement de vue sans recharger la page
+        loadView(view);
     });
 });
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
-    loadView('dashboard'); // Vue par défaut au lancement
-    console.log("Scholarite Router : Système initialisé.");
+    loadView('dashboard');
+    console.log("Scholarite Router : Système initialisé avec Notes.");
 });
