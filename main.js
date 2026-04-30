@@ -7,7 +7,8 @@
 import { supabase } from './supabase-client.js';
 import { renderCasier } from './casier.js'; 
 import { renderNotes } from './notes.js'; 
-import { renderAppel } from './appel.js'; // Import du module Appel
+import { renderAppel } from './appel.js';
+import { renderJournal } from './journal.js'; // Import du nouveau module Journal
 
 // Sélection des éléments du DOM
 const appRoot = document.getElementById('app-root');
@@ -32,15 +33,19 @@ async function loadView(viewName) {
                 break;
                 
             case 'notes':
-                renderNotes(appRoot); // Appel du module de saisie des cotes
+                renderNotes(appRoot);
                 break;
                 
             case 'appel':
-                renderAppel(appRoot); // Appel du module de registre d'appel
+                renderAppel(appRoot);
+                break;
+                
+            case 'journal':
+                renderJournal(appRoot); // Appel du module Journal
                 break;
                 
             case 'casier':
-                renderCasier(appRoot); // Appel du module Casier
+                renderCasier(appRoot);
                 break;
                 
             case 'settings':
@@ -67,5 +72,5 @@ navButtons.forEach(btn => {
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
     loadView('dashboard');
-    console.log("Scholarite Router : Système initialisé avec Casier, Notes et Appel.");
+    console.log("Scholarite Router : Système complet avec Casier, Notes, Appel et Journal.");
 });
