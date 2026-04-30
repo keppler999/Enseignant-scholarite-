@@ -1,13 +1,13 @@
 <div class="page-container" style="padding: 10px; padding-bottom: 100px;">
     
-    <div class="glass-box" style="margin-bottom: 20px; border-radius: 24px;">
+    <div class="glass-box" style="margin-bottom: 20px; border-radius: 24px; border: 1px solid rgba(212,175,55,0.2);">
         <h3 style="font-size: 0.75rem; color: var(--gold); margin-bottom: 15px;">
             <i class="fas fa-filter"></i> SELECTION DU COURS
         </h3>
         
         <div style="margin-bottom: 15px;">
             <label style="font-size: 0.6rem; opacity: 0.5; display: block; margin: 0 0 5px 10px;">PROGRAMME RDC</label>
-            <select id="branch-select" class="list-item-black" style="width: 100%; border: 1px solid var(--border); color: #fff; outline: none;">
+            <select id="branch-select" class="list-item-black" style="width: 100%; border: 1px solid var(--border-white); color: #fff; outline: none; padding: 10px; border-radius: 12px;">
                 <option value="eveil">Éveil Scientifique</option>
                 <option value="langues">Français / Langues</option>
                 <option value="math">Mathématiques</option>
@@ -17,7 +17,7 @@
 
         <div>
             <label style="font-size: 0.6rem; opacity: 0.5; display: block; margin: 0 0 5px 10px;">MATIERE CONCERNEE</label>
-            <select id="course-select" class="list-item-black" style="width: 100%; border: 1px solid var(--border); color: var(--gold); font-weight: 700; outline: none;">
+            <select id="course-select" class="list-item-black" style="width: 100%; border: 1px solid var(--border-white); color: var(--gold); font-weight: 700; outline: none; padding: 10px; border-radius: 12px;">
                 <option value="geo">Géographie</option>
                 <option value="sciences">Sciences Naturelles</option>
                 <option value="calcul">Calcul Mental</option>
@@ -28,7 +28,7 @@
 
     <div class="glass-box" style="border-radius: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0;"><i class="fas fa-pen-nib"></i> SAISIE DES COTES</h3>
+            <h3 style="margin: 0; font-size: 0.9rem;"><i class="fas fa-pen-nib"></i> SAISIE DES COTES</h3>
             <span id="points-counter" style="font-size: 0.7rem; background: var(--gold); color: #000; padding: 2px 10px; border-radius: 20px; font-weight: 900;">0 / 12</span>
         </div>
 
@@ -40,7 +40,7 @@
             <div style="text-align: center; padding: 20px; opacity: 0.5;">Chargement de la liste...</div>
         </div>
 
-        <button id="save-all-btn" style="width: 100%; margin-top: 30px; padding: 20px; border-radius: 20px; border: none; background: var(--gold); color: #000; font-weight: 900; font-size: 1rem; text-transform: uppercase; box-shadow: 0 10px 30px rgba(212,175,55,0.2);">
+        <button id="save-all-btn" style="width: 100%; margin-top: 30px; padding: 20px; border-radius: 20px; border: none; background: var(--gold); color: #000; font-weight: 900; font-size: 1rem; text-transform: uppercase; box-shadow: 0 10px 30px rgba(212,175,55,0.2); cursor: pointer;">
             Enregistrer les notes
         </button>
     </div>
