@@ -15,7 +15,7 @@
         <div class="drawer-content">
             <div class="drawer-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
                 <span style="font-size: 0.75rem; letter-spacing: 4px; font-weight: 900; color: var(--gold);">OPTIONS</span>
-                <div id="close-drawer" style="cursor: pointer; padding: 10px; transition: 0.3s;">
+                <div id="close-drawer" style="cursor: pointer; padding: 10px;">
                     <i class="fas fa-times txt-gold" style="font-size: 1.3rem;"></i>
                 </div>
             </div>
@@ -44,17 +44,16 @@
 
     <header class="teacher-header">
         <div class="header-content">
-            <div class="profile-mini">
+            <div class="profile-mini" id="trigger-profile-edit" style="cursor:pointer;">
                 <img src="https://i.pravatar.cc/150?u=prof" id="prof-img" alt="Photo Prof">
                 <div class="profile-info">
-                    <h4>M. Jean DUPONT</h4>
+                    <h4 id="prof-name">M. Jean DUPONT</h4>
                     <small><i class="fas fa-map-marker-alt" style="font-size: 0.5rem; margin-right: 4px;"></i> KINSHASA | 6<sup>e</sup> EP</small>
                 </div>
             </div>
 
             <div class="header-right-block">
                 <div class="brand-small">SCOLARITE</div>
-                
                 <div id="menu-trigger" class="hamburger-menu">
                     <div class="bar-top"></div>
                     <div class="bar-mid"></div>
@@ -65,30 +64,71 @@
     </header>
 
     <main id="main-view" class="content-area">
+        
         <section id="view-dashboard" class="tab-content active">
-            <div class="date-badge">28 AVRIL 2026</div>
-            
+            <div class="date-badge" id="current-date">-- AVRIL 2026</div>
             <div class="teacher-grid">
                 <div class="glass-box">
-                    <h3><i class="fas fa-archive" style="margin-right: 10px; font-size: 0.9rem;"></i> RÉSUMÉ PRÉSENCES</h3>
+                    <h3><i class="fas fa-archive"></i> RÉSUMÉ PRÉSENCES</h3>
                     <div class="list-item-black">
                         <span class="label">Présents</span>
-                        <span class="txt-green value" style="font-weight: 900;">450</span>
+                        <span class="txt-green value" id="dash-presents">0</span>
                     </div>
-                    <div class="list-item-black" style="margin-bottom: 0;">
+                    <div class="list-item-black">
                         <span class="label">Absents</span>
-                        <span class="txt-red value" style="font-weight: 900;">38</span>
+                        <span class="txt-red value" id="dash-absents">0</span>
                     </div>
                 </div>
-
                 <div class="glass-box">
-                    <h3 class="txt-gold"><i class="fas fa-user-check" style="margin-right: 10px; font-size: 0.9rem;"></i> POINTAGE RAPIDE</h3>
-                    <div id="top-5">
-                        </div>
+                    <h3 class="txt-gold"><i class="fas fa-user-check"></i> POINTAGE RAPIDE</h3>
+                    <div id="top-5"></div>
                 </div>
             </div>
         </section>
+
+        <section id="view-casier" class="tab-content">
+            </section>
+
+        <section id="view-saisie" class="tab-content"></section>
+        <section id="view-appel" class="tab-content"></section>
+        <section id="view-carnet" class="tab-content"></section>
+
     </main>
+
+    <div id="modal-eleve" class="modal-overlay">
+        <div class="modal-content glass-premium">
+            <h3 class="txt-gold" style="margin-top:0;">FICHE ÉLÈVE</h3>
+            <form id="form-eleve">
+                <div class="photo-upload-zone" style="text-align:center; margin-bottom:20px;">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" id="preview-photo" class="profile-glow" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--gold); margin-bottom:10px;">
+                    <div style="display:flex; justify-content:center; gap:10px;">
+                        <button type="button" class="btn-mini-gold" onclick="document.getElementById('input-photo').click()">Importer</button>
+                        <button type="button" class="btn-mini-white" id="btn-library">Bibliothèque</button>
+                    </div>
+                    <input type="file" id="input-photo" hidden accept="image/*">
+                </div>
+                
+                <div class="form-grid-luxe">
+                    <input type="text" placeholder="Nom" required id="f-nom">
+                    <input type="text" placeholder="Post-nom" id="f-postnom">
+                    <input type="text" placeholder="Prénom" id="f-prenom">
+                    <select id="f-sexe">
+                        <option value="M">Masculin (M)</option>
+                        <option value="F">Féminin (F)</option>
+                    </select>
+                    <input type="date" id="f-birth">
+                    <input type="text" placeholder="Nom complet parents" id="f-parents">
+                    <input type="tel" placeholder="Téléphone (Parents)" id="f-tel">
+                    <textarea placeholder="Adresse de résidence" id="f-adresse"></textarea>
+                </div>
+                
+                <div class="form-actions" style="margin-top:20px; display:flex; gap:10px;">
+                    <button type="button" class="btn-cancel" id="btn-close-modal" style="flex:1;">Annuler</button>
+                    <button type="submit" class="btn-publish" style="flex:2;">ENREGISTRER</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <nav class="mobile-nav">
         <div class="nav-btn active" data-target="view-dashboard">
@@ -108,6 +148,12 @@
         </div>
     </nav>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://wkyqesqmfthcpemqpjvo.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_EW4WRdcYH_6y8rlen9Pn2A_e8_cKveu";
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    </script>
     <script src="teacher-app.js"></script>
 </body>
             </html>
