@@ -1,72 +1,69 @@
-/* * SCHOLARITE - Signature Engine v3.0
- * Design : Verre Poli Quartz & Black Banding
- */
-
+/* --- 1. VARIABLES GLOBALES (Le cerveau du design) --- */
 :root {
-    /* Palette Signature */
-    --gold: #D4AF37;
+    --gold: #D4AF37;           /* Couleur Signature Or */
     --gold-glow: rgba(212, 175, 55, 0.3);
-    
-    /* Couleurs Verre Quartz */
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.15);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-    
-    /* Bande Noire Semi-Transparente */
-    --black-band: rgba(0, 0, 0, 0.85);
-    
-    /* Typographie */
+    --bg-deep: #050505;        /* Noir profond */
+    --glass-bg: rgba(0, 0, 0, 0.65); /* Bande noire semi-transparente */
+    --glass-blur: blur(20px);  /* Effet de verre poli */
+    --border-subtle: rgba(255, 255, 255, 0.1); /* Bordure ultra fine */
     --font-main: 'Inter', -apple-system, sans-serif;
 }
 
-/* Base - Le Fond d'écran */
+/* --- 2. BASE & BACKGROUND (La scène) --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    font-family: var(--font-main);
+    /* Image de classe africaine en arrière-plan, fixe pour un effet de profondeur */
+    background: #000 url('https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=2000') center/cover no-repeat fixed;
     color: #fff;
-    /* L'image est fixée pour donner une profondeur stable */
-    background: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1920') center/cover no-repeat fixed;
-    background-blend-mode: overlay;
-    background-color: rgba(0,0,0,0.4); /* Assombrit légèrement l'image pour la lisibilité */
+    font-family: var(--font-main);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Le composant "Verre de Quartz" (Utilisé partout) */
-.glass-quartz {
+/* --- 3. COMPOSANTS "VERRE POLI" (Le design premium) --- */
+/* C'est la classe qu'on appliquera à toutes les cartes de données */
+.glass-panel {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px); /* Support Safari */
-    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-subtle);
     border-radius: 24px;
-    box-shadow: var(--glass-shadow);
     padding: 20px;
+    margin: 15px;
 }
 
-/* Bande Noire Semi-Transparente (Header & Nav) */
-.teacher-header, .mobile-nav {
-    background: var(--black-band);
-    backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+/* --- 4. BANDE NOIRE SEMI-TRANSPARENTE (Pour la lisibilité des données) --- */
+.data-strip {
+    background: rgba(0, 0, 0, 0.8); /* Plus opaque pour les tableaux */
+    border-bottom: 1px solid var(--gold);
+    padding: 15px;
+    width: 100%;
 }
 
-/* Textes de la marque */
-.brand-small { 
-    color: var(--gold); 
-    letter-spacing: 4px; 
-    font-weight: 900; 
-    text-transform: uppercase;
+/* --- 5. TEXTE & TYPOGRAPHIE --- */
+h1, h2, h3 { color: var(--gold); letter-spacing: 1px; }
+.txt-gold { color: var(--gold); }
+
+/* --- 6. NAVIGATION & HEADER --- */
+.teacher-header {
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gold);
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-/* Animation pour l'interactivité */
-.nav-btn {
-    transition: all 0.3s ease;
-    cursor: pointer;
-    background: none;
-    border: none;
+.mobile-nav {
+    background: rgba(0, 0, 0, 0.95);
+    border-top: 1px solid var(--border-subtle);
+    padding: 15px;
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
-.nav-btn.active {
-    color: var(--gold);
-    text-shadow: 0 0 10px var(--gold-glow);
-}
