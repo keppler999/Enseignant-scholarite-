@@ -3,9 +3,11 @@
  * Rôle : Routeur principal. Gère la navigation entre les modules sans rechargement.
  */
 
+// Importation des modules nécessaires
 import { supabase } from './supabase-client.js';
+import { renderCasier } from './casier.js'; // Import du module Casier
 
-// Sélection des éléments
+// Sélection des éléments du DOM
 const appRoot = document.getElementById('app-root');
 const navButtons = document.querySelectorAll('.nav-btn');
 
@@ -19,35 +21,39 @@ async function loadView(viewName) {
     });
 
     // 2. Chargement du contenu
+    // On nettoie le contenu actuel avant d'injecter le nouveau
     appRoot.innerHTML = `<div class="glass-card"><p>Chargement du module ${viewName}...</p></div>`;
 
     try {
         switch(viewName) {
             case 'dashboard':
-                // Implémentation du Dashboard
                 appRoot.innerHTML = `<h1>Dashboard</h1><p>Vue d'ensemble et statistiques...</p>`;
                 break;
+                
             case 'notes':
-                // Implémentation du module Cotes
                 appRoot.innerHTML = `<h1>Saisie des Cotes</h1>`;
                 break;
+                
             case 'appel':
-                // Implémentation du module Appel
                 appRoot.innerHTML = `<h1>Registre d'Appel</h1>`;
                 break;
+                
             case 'casier':
-                // Implémentation du module Casier
-                appRoot.innerHTML = `<h1>Casier Élève</h1>`;
+                // Appel de la fonction définie dans casier.js
+                // On passe appRoot pour que le module sache où s'afficher
+                renderCasier(appRoot); 
                 break;
+                
             case 'settings':
-                // Implémentation des paramètres
                 appRoot.innerHTML = `<h1>Paramètres</h1>`;
                 break;
+                
             default:
-                appRoot.innerHTML = `<h1>Bienvenue</h1>`;
+                appRoot.innerHTML = `<h1>Bienvenue sur Scholarite</h1>`;
         }
     } catch (error) {
-        appRoot.innerHTML = `<p style="color:red">Erreur de chargement du module.</p>`;
+        console.error("Erreur de routage :", error);
+        appRoot.innerHTML = `<p style="color:red">Erreur lors du chargement du module.</p>`;
     }
 }
 
@@ -55,12 +61,12 @@ async function loadView(viewName) {
 navButtons.forEach(btn => {
     btn.addEventListener('click', () => {
         const view = btn.dataset.view;
-        loadView(view);
+        loadView(view); // Changement de vue sans recharger la page
     });
 });
 
-// Initialisation au chargement
+// Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
-    loadView('dashboard');
-    console.log("Scholarite Router : Prêt.");
+    loadView('dashboard'); // Vue par défaut au lancement
+    console.log("Scholarite Router : Système initialisé.");
 });
