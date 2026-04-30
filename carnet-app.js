@@ -1,6 +1,7 @@
 /**
  * SCHOLARITE - Module Carnet (Journal de Classe)
  * Logique : Gestion de l'emploi du temps et planification
+ * Mise à jour : Stabilisation des sélecteurs DOM
  */
 
 (function() {
@@ -18,13 +19,13 @@
 
         // Génération des bandes noires de l'emploi du temps
         container.innerHTML = planningJour.map((item, index) => `
-            <div class="list-item-black" style="padding: 15px; border-left: 4px solid ${getStatusColor(item.statut)};">
+            <div class="list-item-black" style="padding: 15px; border-left: 4px solid ${getStatusColor(item.statut)}; margin-bottom: 8px;">
                 <div style="display: flex; flex-direction: column; gap: 4px;">
                     <span style="font-size: 0.65rem; opacity: 0.5; font-weight: 700;">${item.heure}</span>
                     <span style="font-weight: 700; font-size: 0.95rem;">${item.cours}</span>
                 </div>
                 <div style="text-align: right;">
-                    <i class="fas ${item.icon}" style="color: var(--gold); opacity: 0.2; font-size: 1.2rem; position: absolute; right: 60px; top: 20px;"></i>
+                    <i class="fas ${item.icon}" style="color: var(--gold); opacity: 0.15; font-size: 1.2rem; position: absolute; right: 60px; margin-top: -5px;"></i>
                     <span style="font-size: 0.6rem; text-transform: uppercase; font-weight: 800; color: ${getStatusColor(item.statut)};">
                         ${item.statut}
                     </span>
@@ -41,13 +42,14 @@
         }
     }
 
-    // Gestion de la sauvegarde du Journal
+    // Gestion de la sauvegarde du Journal (Utilisation de la délégation d'événements)
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('#save-journal-btn');
         if (btn) {
-            const sujet = document.getElementById('lesson-topic').value;
+            const topicInput = document.getElementById('lesson-topic');
+            const obsInput = document.getElementById('lesson-obs');
             
-            if (!sujet) {
+            if (!topicInput || !topicInput.value) {
                 alert("Veuillez saisir le sujet de la leçon avant d'enregistrer.");
                 return;
             }
@@ -62,14 +64,14 @@
                 btn.disabled = false;
                 btn.innerHTML = 'Enregistrer le journal';
                 btn.style.opacity = "1";
-                // Nettoyage du champ
-                document.getElementById('lesson-topic').value = "";
-                document.getElementById('lesson-obs').value = "";
+                // Nettoyage des champs
+                if(topicInput) topicInput.value = "";
+                if(obsInput) obsInput.value = "";
             }, 1800);
         }
     });
 
-    // Lancer l'initialisation
+    // Initialisation sécurisée
     initCarnet();
 })();
 
