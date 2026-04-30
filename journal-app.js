@@ -1,6 +1,7 @@
 /**
  * SCHOLARITE - Module Journal (Flux Direction)
  * Logique : Affichage des communiqués administratifs
+ * Mise à jour : Stabilisation du rendu et des sélecteurs
  */
 
 (function() {
@@ -41,7 +42,7 @@
 
         // Génération des cartes de communiqués
         container.innerHTML = communiques.map(item => `
-            <div class="list-item-black" style="flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px; position: relative; overflow: hidden;">
+            <div class="list-item-black" style="flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px; position: relative; overflow: hidden; margin-bottom: 12px; border-radius: 15px;">
                 
                 <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: ${getPriorityColor(item.priorite)};"></div>
 
@@ -59,10 +60,10 @@
                 </p>
 
                 <div style="display: flex; gap: 10px; margin-top: 5px;">
-                    <button style="background: rgba(255,255,255,0.05); border: none; color: var(--gold); font-size: 0.65rem; padding: 5px 12px; border-radius: 5px; font-weight: 700;">
+                    <button style="background: rgba(255,255,255,0.05); border: none; color: var(--gold); font-size: 0.65rem; padding: 5px 12px; border-radius: 5px; font-weight: 700; cursor: pointer;">
                         LIRE PLUS
                     </button>
-                    <button style="background: transparent; border: none; color: rgba(255,255,255,0.3); font-size: 0.65rem; font-weight: 700;">
+                    <button style="background: transparent; border: none; color: rgba(255,255,255,0.3); font-size: 0.65rem; font-weight: 700; cursor: pointer;">
                         IGNORER
                     </button>
                 </div>
@@ -79,7 +80,7 @@
         }
     }
 
-    // Lancer l'affichage
+    // Initialisation
     initJournal();
 })();
 
