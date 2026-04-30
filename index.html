@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scholarite | Signature Engine</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="teacher-header">
+        <div class="header-content">
+            <h1 class="brand-small">SCOLARITE</h1>
+            <div class="profile-mini" id="profile-container">
+                <i class="fas fa-user-circle" style="font-size: 1.8rem; color: var(--gold);"></i>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-root" class="content-area">
+        <div class="glass-card" style="margin: 20px; text-align: center;">
+            <i class="fas fa-circle-notch fa-spin" style="color: var(--gold); font-size: 2rem;"></i>
+            <p style="margin-top: 15px;">Chargement du moteur Scholarite...</p>
+        </div>
+    </main>
+
+    <nav class="mobile-nav">
+        <button class="nav-btn active" data-target="dashboard"><i class="fas fa-home"></i></button>
+        <button class="nav-btn" data-target="notes"><i class="fas fa-pen-nib"></i></button>
+        <button class="nav-btn" data-target="appel"><i class="fas fa-check-double"></i></button>
+        <button class="nav-btn" data-target="casier"><i class="fas fa-user-graduate"></i></button>
+        <button class="nav-btn" data-target="settings"><i class="fas fa-cog"></i></button>
+    </nav>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log('Scholarite : Offline Engine prêt.'))
+                .catch(err => console.log('Erreur SW:', err));
+        }
+    </script>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
+
