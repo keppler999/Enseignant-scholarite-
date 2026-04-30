@@ -67,4 +67,4 @@ async function saveGrades() {
 
     if (error) alert("Erreur lors de l'enregistrement : " + error.message);
     else alert("Notes enregistrées avec succès !");
-      }
+}
