@@ -1,9 +1,6 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = 'https://wkyqesqmfthcpemqpjvo.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_EW4WRdcYH_6y8rlen9Pn2A_e8_cKveu';
+const supabaseUrl = 'https://cpkmsuokwcymgwzqqrxz.supabase.co';
+const supabaseKey = 'sb_publishable_5Oia6PSB5xK9GwxotVd_MA_Q7lDLA03';
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-console.log("Scholarite Engine : Connexion établie.");
-
+export const supabase = createClient(supabaseUrl, supabaseKey);
