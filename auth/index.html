@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SCOLARITE - Connexion Enseignant</title>
+    <!-- On lie les fichiers partagés -->
+    <link rel="stylesheet" href="../shared/css/style.css">
+</head>
+<body>
+    <!-- Overlay pour l'image de fond floue -->
+    <div class="auth-overlay">
+        <main class="glass-card login-box">
+            <div class="logo-area">
+                <h1 class="gold-text">SCOLARITE</h1>
+                <p>Espace Enseignant v3.0</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="input-field">
+                    <label>Email Professionnel</label>
+                    <input type="email" id="email" placeholder="ex: jean.dupont@ecole.com" required>
+                </div>
+
+                <div class="input-field">
+                    <label>Mot de passe</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-gold">SE CONNECTER</button>
+            </form>
+
+            <div id="errorMessage" class="error-text"></div>
+        </main>
+    </div>
+
+    <!-- Librairies et Logique -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../shared/js/config.js"></script>
+    <script src="login-logic.js"></script>
+</body>
+</html>
+
