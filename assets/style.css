@@ -1,0 +1,47 @@
+/* Fond de l'application (Noir Profond + Image floue) */
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.95)), 
+                url('votre-fond-ecole.jpg'); /* Référence visuelle 1002063328.png */
+    background-size: cover;
+    background-attachment: fixed;
+    color: #ffffff;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* L'effet Glace Polie (Glassmorphism) - Référence 1002063852.png */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+/* Le Gold Métallique (Boutons et Bordures) - Référence 1002063795.png */
+.btn-gold {
+    background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 25px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s ease;
+}
+
+.btn-gold:hover {
+    filter: brightness(1.2);
+    transform: scale(1.02);
+}
+
+/* Titres en Or */
+.text-gold {
+    background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
