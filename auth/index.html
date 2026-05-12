@@ -2,24 +2,42 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>SCOLARITE - Connexion Enseignant</title>
-    <!-- On lie les fichiers partagés -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SCOLARITE - Authentification</title>
+    <!-- Lien vers notre design commun -->
     <link rel="stylesheet" href="../shared/css/style.css">
+    <style>
+        /* CSS spécifique à la page de login pour le centrage */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+        }
+        .auth-wrapper {
+            width: 90%;
+            max-width: 400px;
+        }
+        .logo-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Overlay pour l'image de fond floue -->
-    <div class="auth-overlay">
-        <main class="glass-card login-box">
+
+    <div class="auth-wrapper">
+        <main class="glass-card">
             <div class="logo-area">
                 <h1 class="gold-text">SCOLARITE</h1>
-                <p>Espace Enseignant v3.0</p>
+                <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">Module Enseignant</p>
             </div>
 
             <form id="loginForm">
                 <div class="input-field">
-                    <label>Email Professionnel</label>
-                    <input type="email" id="email" placeholder="ex: jean.dupont@ecole.com" required>
+                    <label>Identifiant</label>
+                    <input type="email" id="email" placeholder="nom@ecole.com" required>
                 </div>
 
                 <div class="input-field">
@@ -27,17 +45,16 @@
                     <input type="password" id="password" placeholder="••••••••" required>
                 </div>
 
-                <button type="submit" class="btn-gold">SE CONNECTER</button>
+                <button type="submit" class="btn-gold">Se connecter</button>
             </form>
 
             <div id="errorMessage" class="error-text"></div>
         </main>
     </div>
 
-    <!-- Librairies et Logique -->
+    <!-- Script de connexion -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../shared/js/config.js"></script>
     <script src="login-logic.js"></script>
 </body>
 </html>
-
