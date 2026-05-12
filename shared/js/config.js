@@ -28,3 +28,15 @@ function verifySession() {
         window.location.href = "../auth/index.html";
     }
 }
+// shared/js/config.js (à ajouter à la fin)
+
+function checkSession() {
+    const sessionStart = localStorage.getItem('scholarite_session_start');
+    if (!sessionStart) return false;
+
+    const now = Date.now();
+    const twentyFourHours = 24 * 60 * 60 * 1000;
+
+    // Si la session date de moins de 24h, c'est bon
+    return (now - parseInt(sessionStart) < twentyFourHours);
+}
