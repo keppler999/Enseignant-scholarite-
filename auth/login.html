@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarite - Connexion Enseignant</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body class="bg-container">
+    <div class="overlay">
+        <div class="glass-card">
+            <h1 class="logo-gold">SCHOLARITE</h1>
+            <p class="subtitle">Espace Enseignant - Primaire</p>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Identifiant</label>
+                    <input type="text" id="email" placeholder="nom@ecole.com" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-gold">SE CONNECTER</button>
+            </form>
+            
+            <div id="statusMessage"></div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>
+
