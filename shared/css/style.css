@@ -1,20 +1,27 @@
-/* shared/css/style.css */
-
+/* =========================================
+   1. FONDATIONS & VARIABLES 
+   ========================================= */
 :root {
+    /* Le dégradé or métallique (Vu sur image 1002063795.png) */
     --gold: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-    --glass: rgba(10, 10, 10, 0.7);
-    --border-glass: rgba(255, 255, 255, 0.1);
+    /* Le noir semi-transparent pour l'effet vitre */
+    --glass: rgba(10, 10, 10, 0.75);
+    /* La bordure subtile pour délimiter les cartes */
+    --border-glass: rgba(255, 255, 255, 0.12);
 }
 
 body {
-    background-color: #050505; /* Noir ultra-profond */
+    background-color: #050505; /* Noir ultra-profond pour faire ressortir l'or */
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
 }
 
-/* L'effet Glace Polie (Glassmorphism) */
+/* =========================================
+   2. COMPOSANTS GLASSMORPHISM 
+   ========================================= */
 .glass-card {
     background: var(--glass);
     backdrop-filter: blur(20px);
@@ -22,22 +29,76 @@ body {
     border: 1px solid var(--border-glass);
     border-radius: 15px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    padding: 25px;
 }
 
-/* Le bouton Gold avec reflet métallique */
+/* Texte avec effet or pur */
+.gold-text {
+    background: var(--gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+/* =========================================
+   3. FORMULAIRES & INTERACTION
+   ========================================= */
+.input-field {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.input-field label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 5px;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    border-radius: 8px;
+    color: white;
+    margin-top: 5px;
+    box-sizing: border-box; /* Important pour que le padding ne casse pas la largeur */
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+.input-field input:focus {
+    border: 1px solid #BF953F; /* Devient or quand on clique dessus */
+}
+
+/* Bouton métallique */
 .btn-gold {
     background: var(--gold);
     color: #000;
     border: none;
-    padding: 12px 24px;
+    width: 100%; /* S'adapte à la largeur du formulaire */
+    padding: 14px 24px;
     border-radius: 8px;
     font-weight: 800;
     cursor: pointer;
     text-transform: uppercase;
     transition: 0.3s;
+    margin-top: 10px;
 }
 
 .btn-gold:hover {
-    box-shadow: 0 0 20px rgba(191, 149, 63, 0.4);
+    box-shadow: 0 0 25px rgba(191, 149, 63, 0.5);
     transform: translateY(-2px);
 }
+
+/* Messages d'erreur */
+.error-text {
+    color: #ff4d4d;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 15px;
+    text-shadow: 0 0 10px rgba(255, 77, 77, 0.3);
+}
+
