@@ -1,0 +1,126 @@
+<!-- dashboard/index.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCOLARITE - Tableau de Bord</title>
+    <link rel="stylesheet" href="../shared/css/style.css">
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            color: #BF953F;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(191, 149, 63, 0.2);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Animation de défilement (Marquee) */
+        .scrolling-container {
+            height: 150px;
+            overflow-y: hidden;
+            position: relative;
+        }
+
+        .scrolling-content {
+            animation: scrollUp 20s linear infinite;
+        }
+
+        .scrolling-container:hover .scrolling-content {
+            animation-play-state: paused;
+            overflow-y: auto;
+        }
+
+        @keyframes scrollUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100%); }
+        }
+
+        .stat-number { font-size: 1.8rem; font-weight: bold; }
+        .time-box { font-size: 2rem; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <header style="padding: 20px; text-align: center;">
+        <h2 class="gold-text">DASHBOARD ENSEIGNANT</h2>
+    </header>
+
+    <div class="dashboard-grid">
+        <!-- Fenêtre Temps -->
+        <div class="glass-card time-box">
+            <div id="currentDate" style="font-size: 1rem; color: #BF953F;"></div>
+            <div id="currentTime" class="gold-text"></div>
+        </div>
+
+        <!-- Fenêtre Présence Réelle -->
+        <div class="glass-card">
+            <div class="card-title">Présences (Aujourd'hui)</div>
+            <div class="stat-number" id="presentTotal">--</div>
+            <div style="font-size: 0.8rem; opacity: 0.7;">
+                F: <span id="presentFilles">0</span> | G: <span id="presentGarcons">0</span>
+            </div>
+        </div>
+
+        <!-- Fenêtre Absences -->
+        <div class="glass-card">
+            <div class="card-title">Absences</div>
+            <div style="color: #ff4d4d;">
+                F: <span id="absentFilles">0</span> | G: <span id="absentGarcons">0</span>
+            </div>
+        </div>
+
+        <!-- Fenêtre Effectif Classe -->
+        <div class="glass-card">
+            <div class="card-title">Effectif Global</div>
+            <div class="stat-number" id="effectifTotal">--</div>
+            <div style="font-size: 0.8rem; opacity: 0.7;">
+                Total Filles: <span id="totalFilles">0</span><br>
+                Total Garçons: <span id="totalGarcons">0</span>
+            </div>
+        </div>
+
+        <!-- Fenêtre Moyennes (Défilement) -->
+        <div class="glass-card">
+            <div class="card-title">Moyennes des Élèves</div>
+            <div class="scrolling-container" id="containerMoyennes">
+                <div class="scrolling-content" id="listMoyennes">
+                    <!-- Données Supabase ici -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Fenêtre Horaire -->
+        <div class="glass-card">
+            <div class="card-title">Horaire du jour</div>
+            <div class="scrolling-container">
+                <div class="scrolling-content" id="listHoraire">
+                    <!-- Données Supabase ici -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Fenêtre Communiqués -->
+        <div class="glass-card">
+            <div class="card-title">Messages Direction</div>
+            <div id="listMessages" style="font-size: 0.85rem;">
+                Chargement des communiqués...
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../shared/js/config.js"></script>
+    <script src="dashboard-logic.js"></script>
+</body>
+  </html>
+  
