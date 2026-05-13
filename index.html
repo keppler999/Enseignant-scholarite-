@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>SCOLARITE - Démarrage...</title>
-    <!-- On lie les fichiers partagés qui sont maintenant corrects -->
     <link rel="stylesheet" href="shared/css/style.css">
     <style>
-        /* CSS spécifique pour le Splash Screen */
         body {
             display: flex;
             align-items: center;
@@ -15,11 +13,13 @@
             min-height: 100vh;
             background-color: #050505;
             overflow: hidden;
+            margin: 0;
         }
 
         .splash-panel {
             text-align: center;
             padding: 40px;
+            width: 85%;
             max-width: 400px;
         }
 
@@ -31,7 +31,7 @@
             font-weight: 800;
             letter-spacing: 3px;
             animation: pulse-gold 2s infinite ease-in-out;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .loading-bar {
@@ -40,7 +40,7 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 2px;
             overflow: hidden;
-            margin: 20px 0;
+            margin: 25px 0;
             border: 1px solid rgba(191, 149, 63, 0.1);
         }
 
@@ -48,7 +48,7 @@
             width: 0%;
             height: 100%;
             background: var(--gold);
-            animation: load-progress 1.5s forwards ease-out;
+            animation: load-progress 2s forwards ease-out;
         }
 
         @keyframes pulse-gold {
@@ -66,31 +66,39 @@
 
     <main class="glass-card splash-panel">
         <h1 class="logo-gold-anim">SCOLARITE</h1>
-        <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">PLATEFORME ÉDUCATIVE</p>
+        <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; letter-spacing: 1px;">PLATEFORME ÉDUCATIVE</p>
         
         <div class="loading-bar">
             <div class="bar-progress"></div>
         </div>
 
-        <p style="color: #BF953F; font-weight: bold; font-size: 0.8rem;">VÉRIFICATION DE LA SESSION...</p>
+        <p id="status-text" style="color: #BF953F; font-weight: bold; font-size: 0.75rem; text-transform: uppercase;">VÉRIFICATION DE LA SESSION...</p>
     </main>
 
-    <!-- Supabase et Logique -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="shared/js/config.js"></script>
     <script>
-        // Logique de redirection
         window.onload = () => {
-            // L'animation dure 1.5s, on laisse un petit délai
-            setTimeout(() => {
-                const sessionOK = checkSession(); // Fonction dans shared/js/config.js
+            const status = document.getElementById('status-text');
 
-                if (sessionOK) {
-                    window.location.href = "dashboard/index.html";
-                } else {
+            // On laisse l'animation de la barre se faire (2 secondes)
+            setTimeout(() => {
+                try {
+                    // Utilisation de la fonction isSessionValid définie dans ton config.js
+                    if (typeof isSessionValid === "function" && isSessionValid()) {
+                        status.innerText = "SESSION VALIDE - REDIRECTION...";
+                        window.location.href = "dashboard/index.html";
+                    } else {
+                        status.innerText = "AUTHENTIFICATION REQUISE...";
+                        window.location.href = "auth/index.html";
+                    }
+                } catch (error) {
+                    console.error("Erreur de redirection:", error);
+                    // En cas d'erreur critique, on renvoie au login par sécurité
                     window.location.href = "auth/index.html";
                 }
-            }, 2000); // 2 secondes de chargement
+            }, 2300); 
         };
     </script>
 </body>
