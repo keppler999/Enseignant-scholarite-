@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCOLARITE - Faire l'Appel</title>
+    <link rel="stylesheet" href="../shared/css/style.css">
+    <style>
+        .student-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(191, 149, 63, 0.1);
+        }
+        .status-btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+        .status-btn.active-present { background: #BF953F; color: black; }
+        .status-btn.active-absent { background: #ff4d4d; color: white; }
+    </style>
+</head>
+<body>
+    <header style="padding: 20px;">
+        <a href="../dashboard/index.html" style="color: #BF953F; text-decoration: none;">← Retour</a>
+        <h2 class="gold-text" style="text-align: center;">REGISTRE D'APPEL</h2>
+    </header>
+
+    <main class="glass-card" style="margin: 10px; padding: 10px;">
+        <div id="studentList">
+            <p style="text-align: center; opacity: 0.5;">Chargement des élèves...</p>
+        </div>
+        
+        <button id="saveAppel" class="btn-gold" style="margin-top: 20px;">Enregistrer l'Appel</button>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../shared/js/config.js"></script>
+    <script src="appel-logic.js"></script>
+</body>
+</html>
