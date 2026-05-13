@@ -7,12 +7,17 @@
     <title>SCOLARITE - Tableau de Bord</title>
     <link rel="stylesheet" href="../shared/css/style.css">
     <style>
+        body {
+            margin: 0;
+            padding-bottom: 100px; /* Espace pour ne pas cacher le contenu par le menu */
+        }
+
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             padding: 20px;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .card-title {
@@ -27,7 +32,7 @@
         /* Animation de défilement (Marquee) */
         .scrolling-container {
             height: 150px;
-            overflow-y: hidden;
+            overflow: hidden;
             position: relative;
         }
 
@@ -45,55 +50,66 @@
             100% { transform: translateY(-100%); }
         }
 
-        .stat-number { font-size: 1.8rem; font-weight: bold; }
-        .time-box { font-size: 2rem; text-align: center; }
+        .stat-number { font-size: 1.8rem; font-weight: bold; margin: 5px 0; }
+        .time-box { text-align: center; padding: 20px; }
+        
+        /* Style Barre de Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 25px;
+            border: 1px solid rgba(191, 149, 63, 0.4);
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-item:active { transform: scale(0.9); }
     </style>
 </head>
-    <!-- Barre de Navigation Basse (Style Glassmorphism) -->
-<nav style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; display: flex; justify-content: space-around; padding: 15px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(191, 149, 63, 0.3); z-index: 1000;">
-    
-    <a href="index.html" style="text-align: center; text-decoration: none;">
-        <div style="color: #BF953F; font-size: 1.2rem;">🏠</div>
-        <div style="color: white; font-size: 0.6rem; text-transform: uppercase;">Home</div>
-    </a>
-
-    <a href="../appel/index.html" style="text-align: center; text-decoration: none;">
-        <div style="color: #BF953F; font-size: 1.2rem;">📋</div>
-        <div style="color: white; font-size: 0.6rem; text-transform: uppercase;">Faire l'Appel</div>
-    </a>
-
-    <a href="../cotes/index.html" style="text-align: center; text-decoration: none;">
-        <div style="color: #BF953F; font-size: 1.2rem;">✍️</div>
-        <div style="color: white; font-size: 0.6rem; text-transform: uppercase;">Notes</div>
-    </a>
-</nav>
-    
-    <body>
+<body>
 
     <header style="padding: 20px; text-align: center;">
-        <h2 class="gold-text">DASHBOARD ENSEIGNANT</h2>
+        <h1 class="gold-text" style="font-size: 1.5rem; margin: 0;">SCOLARITE</h1>
+        <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem;">Tableau de Bord Enseignant</p>
     </header>
 
     <div class="dashboard-grid">
         <!-- Fenêtre Temps -->
         <div class="glass-card time-box">
-            <div id="currentDate" style="font-size: 1rem; color: #BF953F;"></div>
-            <div id="currentTime" class="gold-text"></div>
+            <div id="currentDate" style="font-size: 0.9rem; color: #BF953F; text-transform: capitalize;"></div>
+            <div id="currentTime" class="gold-text" style="font-size: 2.2rem; font-weight: 800;">00:00:00</div>
         </div>
 
         <!-- Fenêtre Présence Réelle -->
         <div class="glass-card">
             <div class="card-title">Présences (Aujourd'hui)</div>
-            <div class="stat-number" id="presentTotal">--</div>
-            <div style="font-size: 0.8rem; opacity: 0.7;">
-                F: <span id="presentFilles">0</span> | G: <span id="presentGarcons">0</span>
+            <div class="stat-number" id="presentTotal">0</div>
+            <div style="font-size: 0.8rem; opacity: 0.8;">
+                Filles: <span id="presentFilles" style="color:#BF953F">0</span> | Garçons: <span id="presentGarcons" style="color:#BF953F">0</span>
             </div>
         </div>
 
         <!-- Fenêtre Absences -->
         <div class="glass-card">
-            <div class="card-title">Absences</div>
-            <div style="color: #ff4d4d;">
+            <div class="card-title" style="color: #ff4d4d; border-color: rgba(255, 77, 77, 0.2);">Absences</div>
+            <div class="stat-number" id="absentTotal" style="color: #ff4d4d;">0</div>
+            <div style="font-size: 0.8rem; opacity: 0.8;">
                 F: <span id="absentFilles">0</span> | G: <span id="absentGarcons">0</span>
             </div>
         </div>
@@ -101,8 +117,8 @@
         <!-- Fenêtre Effectif Classe -->
         <div class="glass-card">
             <div class="card-title">Effectif Global</div>
-            <div class="stat-number" id="effectifTotal">--</div>
-            <div style="font-size: 0.8rem; opacity: 0.7;">
+            <div class="stat-number" id="effectifTotal">0</div>
+            <div style="font-size: 0.8rem; opacity: 0.8;">
                 Total Filles: <span id="totalFilles">0</span><br>
                 Total Garçons: <span id="totalGarcons">0</span>
             </div>
@@ -113,7 +129,7 @@
             <div class="card-title">Moyennes des Élèves</div>
             <div class="scrolling-container" id="containerMoyennes">
                 <div class="scrolling-content" id="listMoyennes">
-                    <!-- Données Supabase ici -->
+                    <p style="font-size: 0.8rem; opacity: 0.5;">Aucune note enregistrée</p>
                 </div>
             </div>
         </div>
@@ -123,7 +139,7 @@
             <div class="card-title">Horaire du jour</div>
             <div class="scrolling-container">
                 <div class="scrolling-content" id="listHoraire">
-                    <!-- Données Supabase ici -->
+                    <p style="font-size: 0.8rem; opacity: 0.5;">Chargement de l'horaire...</p>
                 </div>
             </div>
         </div>
@@ -131,15 +147,33 @@
         <!-- Fenêtre Communiqués -->
         <div class="glass-card">
             <div class="card-title">Messages Direction</div>
-            <div id="listMessages" style="font-size: 0.85rem;">
-                Chargement des communiqués...
+            <div id="listMessages" style="font-size: 0.85rem; line-height: 1.4;">
+                Aucun nouveau communiqué.
             </div>
         </div>
     </div>
+
+    <!-- Barre de Navigation Basse -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <div style="font-size: 1.3rem;">🏠</div>
+            <div style="color: #BF953F; font-size: 0.6rem; font-weight: bold; margin-top: 3px;">HOME</div>
+        </a>
+
+        <a href="../appel/index.html" class="nav-item">
+            <div style="font-size: 1.3rem;">📋</div>
+            <div style="color: white; font-size: 0.6rem; margin-top: 3px;">APPEL</div>
+        </a>
+
+        <a href="../cotes/index.html" class="nav-item">
+            <div style="font-size: 1.3rem;">✍️</div>
+            <div style="color: white; font-size: 0.6rem; margin-top: 3px;">NOTES</div>
+        </a>
+    </nav>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../shared/js/config.js"></script>
     <script src="dashboard-logic.js"></script>
 </body>
-  </html>
-  
+            </html>
+            
